@@ -4,10 +4,10 @@ from ludum_dare_49 import colors
 from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
 from ludum_dare_49.physics import GamePhysicsHandler
 from ludum_dare_49.planet import Planet
-from ludum_dare_49.player import Player
+from ludum_dare_49.laser import Laser
 
 
-def test_player():
+def test_laser():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
 
@@ -20,12 +20,15 @@ def test_player():
         color=colors.YELLOW,
         physics_handler=physics_handler,
     )
-    player = Player(
-        size=WIDTH/15.0,
+    laser = Laser(
         screen=screen,
-        color=colors.GREEN,
+        size=200,
+        color=colors.YELLOW,
+        x=10,
+        y=10,
+        physics_handler=physics_handler,
     )
-    player.draw()
+
 
     while True:
         for event in pygame.event.get():
@@ -41,9 +44,10 @@ def test_player():
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
-        player.update(pressed_keys)
+        laser.draw()
+        #player.update(pressed_keys)
         # physics_handler.update()
-        planet.draw()
+        #planet.draw()
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -51,4 +55,4 @@ def test_player():
 
 
 if __name__ == "__main__":
-    test_player()
+    test_laser()

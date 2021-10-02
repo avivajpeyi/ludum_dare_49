@@ -13,11 +13,11 @@ class GameObject(ABC):
         self,
         size: int,
         screen: pygame.Surface,
-        physics_handler: GamePhysicsHandler,
         color=WHITE,
         # If x y init pos not provided, then we set to screen center
         x: Optional[int] = None,
         y: Optional[int] = None,
+        physics_handler: Optional[GamePhysicsHandler] = None,
     ):
         self.size = size
         self.screen = screen
@@ -45,7 +45,11 @@ class GameObject(ABC):
 
     @property
     def is_physics_object(self) -> bool:
-        is_obj = self.rigid_body is not None
+        is_obj = (
+            self.rigid_body is not None
+            and self.physics_handler is not None
+            and self.collider is not None
+        )
         return is_obj
 
     @property
