@@ -1,3 +1,5 @@
+import random
+
 import pygame
 
 from ludum_dare_49 import colors
@@ -20,14 +22,16 @@ def test_enemy():
         color=colors.YELLOW,
         physics_handler=physics_handler,
     )
-    enemy = Enemy(
-        x=50,
-        y=50,
-        size=5,
-        screen=screen,
-        physics_handler=physics_handler,
-        color=colors.RED,
-    )
+
+    for i in range(30):
+        Enemy(
+            x=random.randint(0, WIDTH),
+            y=random.randint(0, HEIGHT),
+            size=10,
+            screen=screen,
+            physics_handler=physics_handler,
+            color=colors.RED,
+        )
 
     while True:
         for event in pygame.event.get():
@@ -42,9 +46,11 @@ def test_enemy():
 
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
-        planet.draw()
-        enemy.draw()
+        planet.check_for_collision_with_enemy()
+        for go in physics_handler.physics_game_objects:
+            go.update()
         physics_handler.update()
+
         pygame.display.flip()
         clock.tick(FPS)
 
