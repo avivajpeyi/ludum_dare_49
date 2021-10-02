@@ -13,6 +13,7 @@ from . import constants as const
 from .enemy import Enemy
 from .physics import GamePhysicsHandler
 from .planet import Planet
+from .player import Player
 from .ui import TitleMenu
 
 PLAY_BACKGROUND_MUSIC = False
@@ -79,6 +80,11 @@ class Game:
                 physics_handler=self.physics_handler,
                 color=colors.RED,
             )
+        self.player = Player(
+            size=int(self.planet.size * 0.75),
+            screen=self.screen,
+            color=colors.GREEN,
+        )
 
     def on_keydown(self, event):
         if event.key == pygame.K_ESCAPE:
@@ -117,6 +123,10 @@ class Game:
             self.process_events()
 
             self.screen.fill(pygame.Color("black"))
+
+            pressed_keys = pygame.key.get_pressed()
+            self.player.update(pressed_keys)
+
             self.planet.check_for_collision_with_enemy()
             for go in self.physics_handler.physics_game_objects:
                 go.update()
