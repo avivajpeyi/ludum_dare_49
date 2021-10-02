@@ -10,10 +10,14 @@ from ludum_dare_49.planet import Planet
 from ludum_dare_49.ui import TitleMenu
 
 
+def start_game_test():
+    print("START")
+
+
 def test_enemy():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    title_menu = TitleMenu(screen)
+    title_menu = TitleMenu(screen, start_game_test)
 
     while True:
         for event in pygame.event.get():
