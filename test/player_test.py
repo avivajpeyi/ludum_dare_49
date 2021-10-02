@@ -2,9 +2,9 @@ import pygame
 
 from ludum_dare_49 import colors
 from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
-from ludum_dare_49.player import Player
 from ludum_dare_49.physics import GamePhysicsHandler
 from ludum_dare_49.planet import Planet
+from ludum_dare_49.player import Player
 
 
 def test_player():
@@ -20,19 +20,13 @@ def test_player():
         color=colors.YELLOW,
         physics_handler=physics_handler,
     )
-    """
-    enemy = Enemy(
-        x=50,
-        y=50,
-        size=5,
+    player = Player(
+        size=50,
         screen=screen,
         physics_handler=physics_handler,
-        color=colors.RED,
+        color=colors.GREEN,
     )
-    """
-    player = Player(
-
-    )
+    player.draw()
 
     while True:
         for event in pygame.event.get():
@@ -48,8 +42,9 @@ def test_player():
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
         planet.draw()
-        player.draw()
-        physics_handler.update()
+        pressed_keys = pygame.key.get_pressed()
+        player.update(pressed_keys)
+        # physics_handler.update()
         pygame.display.flip()
         clock.tick(FPS)
 
@@ -57,4 +52,4 @@ def test_player():
 
 
 if __name__ == "__main__":
-    test_enemy()
+    test_player()
