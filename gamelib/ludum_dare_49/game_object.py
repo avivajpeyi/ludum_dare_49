@@ -33,8 +33,11 @@ class GameObject(ABC):
         self.rigid_body = self._init_rigid_body()
         self.collider = self._init_collider()
 
+        self.rect = pygame.Rect(
+            self.x - size / 2, self.y - size / 2, size * 2, size * 2
+        )
         if self.is_physics_object:
-            physics_handler.space.add(self.rigid_body, self.collider)
+            physics_handler.track_object(self)
 
     @property
     def radius(self) -> float:
@@ -74,13 +77,25 @@ class GameObject(ABC):
             x, y = self.rigid_body.position
         else:
             x, y = self.x, self.y
+
         pygame.draw.circle(
             self.screen, self.color, (int(x), int(y)), self.size
         )
 
+        if self.physics_handler.DEBUG_MODE:
+            pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
+
+    def update(self) -> None:
+        self.draw()
+        if self.is_physics_object:
+            self.rect.center = self.rigid_body.position
+
     def destroy(self) -> None:
         """Remove from physics handler"""
-        raise NotImplementedError
+        print(f"Destroy {self}")
+        if self.is_physics_object:
+            self.physics_handler.remove_object(self)
+        del self
 
     def _init_rigid_body(self) -> None:
         """create a pymunk rigid body and return it"""
