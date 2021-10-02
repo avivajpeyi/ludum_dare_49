@@ -16,29 +16,19 @@ class Player(GameObject):
         self,
         size: int,
         screen: pygame.Surface,
-        physics_handler: GamePhysicsHandler,
         color,
         x: Optional[int] = None,
         y: Optional[int] = None,
     ):
-        # TODO: get syntax for super inits
         """
         Initialize the player, which is a rotating triangle.
         Set the initial color, shape, and orientation.
         """
-        super().__init__(size, screen, physics_handler, color, x, y)
+        super().__init__(size, screen, color, x=x, y=y)
         self.theta = 0
-        self.rotation_speed = 1
-        self.aspect_ratio = 3  # height / width of isosceles triangle
+        self.rotation_speed = 4
+        self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
-
-    # def _init_rigid_body(self) -> pymunk.Body:
-    #    rigid_body = pymunk.Body(body_type=pymunk.Body.KINEMATIC)
-    #    #rigid_body.collision_type = CollisionType.PLANET.value
-    #    rigid_body.position = pymunk.Vec2d(self.x, self.y)
-
-    # def _init_collider(self):
-    #    col = pymunk.
 
     def get_relative_vertices(self):
         """
@@ -63,8 +53,7 @@ class Player(GameObject):
 
     def update(self, pressed_keys):
         """
-        Update the player state depending on which keys are pressed
-        """
+        Update the player state depending on which keys are pressed """
 
         # If left or right arrow pressed, apply rotation
         if pressed_keys[pygame.K_LEFT] | pressed_keys[pygame.K_RIGHT]:
