@@ -7,6 +7,8 @@ import pygame
 
 from . import game
 
-def main()
+
+def main():
+    """main entry point"""
     pygame.init()
     game.GameWindow()
