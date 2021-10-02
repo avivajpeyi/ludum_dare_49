@@ -18,7 +18,6 @@ import pygame
 display(HTML("<style>.container { width:100% !important; }</style>"))
 
 
-
 pygame.init()
 
 # +
@@ -42,9 +41,9 @@ try:
             self.color = (255, 0, 0)
             self.theta = 0
             self.rotation_speed = 0.1
-            self.center = (SCREEN_SIZE/2.0, SCREEN_SIZE/2.0)
+            self.center = (SCREEN_SIZE / 2.0, SCREEN_SIZE / 2.0)
             self.aspect_ratio = 3  # height / width of isosceles triangle
-            self.scale = SCREEN_SIZE/20.0  # how big to make it
+            self.scale = SCREEN_SIZE / 20.0  # how big to make it
             self.relative_corners = self.get_relative_corners()
 
         def get_relative_corners(self):
@@ -91,12 +90,11 @@ try:
             # reset theta to 0
             self.theta = 0
             self.draw()
-            
+
     class Laser(pygame.sprite.Sprite):
         def __init__(self):
             self.color = (255, 255, 0)
             self.theta = 0
-            
 
     # Create player Fred and place on screen
     fred = Player()
@@ -124,25 +122,20 @@ try:
         pressed_keys = pygame.key.get_pressed()
         fred.update(pressed_keys)
 
-        pygame.draw.circle(screen, (0, 0, 0), \
-                           (SCREEN_SIZE/2.0, SCREEN_SIZE/2.0), SCREEN_SIZE/10.0)
+        pygame.draw.circle(
+            screen,
+            (0, 0, 0),
+            (SCREEN_SIZE / 2.0, SCREEN_SIZE / 2.0),
+            SCREEN_SIZE / 10.0,
+        )
         pygame.display.flip()
-        
+
 except Exception as e:
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     print(exc_type, fname, exc_tb.tb_lineno)
     print(e)
-    
-    
+
+
 pygame.quit()
 # -
-
-
-
-
-
-
-
-
-
