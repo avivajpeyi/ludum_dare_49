@@ -46,7 +46,7 @@ class GamePhysicsHandler:
 
     def remove_object(self, game_object):
         self.space.remove(game_object.rigid_body, game_object.collider)
-        self.physics_game_objects.remove(game_object)  ## THIS MAY NOT WORK
+        self.physics_game_objects.remove(game_object)  # THIS MAY NOT WORK
 
 
 def planet_gravity(
