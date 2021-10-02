@@ -8,9 +8,12 @@ from setuptools import find_packages, setup
 
 # PROJECT SPECIFIC
 
-NAME = "ludum_dare_49"
-PACKAGES = find_packages(where="gamelib")
-SRC = "gamelib"
+PROJ_NAME = "ludum_dare_49"
+
+SRC_CODE_DIR = "gamelib"
+PACKAGES = find_packages(SRC_CODE_DIR)
+print(PACKAGES)
+
 CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
     "Intended Audience :: Developers",
@@ -20,14 +23,15 @@ CLASSIFIERS = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-INSTALL_REQUIRES = ["pygame>2.0.0"]
-EXTRA_REQUIRE = {"test": ["pytest>=3.6"]}
-EXTRA_REQUIRE["dev"] = EXTRA_REQUIRE["test"] + [
+INSTALL_REQUIRES = [
+    "pygame>2.0.0",
+    "pytest>=3.6",
     "pre-commit",
     "flake8",
     "black",
     "isort",
     "package_version",
+    "interrogate",
 ]
 
 
@@ -39,25 +43,31 @@ def version():
             from package_version import PackageVersion
 
             pv = PackageVersion()
-            v = pv.generate_next_stable(package_name=NAME)
+            v = pv.generate_next_stable(package_name=PROJ_NAME)
         except ImportError:
             v = "1.0.0"
     return v
 
 
 setup(
-    name=NAME,
+    name=PROJ_NAME,
     version=version(),
     description="Ludum Dare 49 game",
     author="Avi + Reinhold",
     author_email="avi.vajpeyi@gmail.com",
     url="https://github.com/avivajpeyi/ludum_dare_49",
     packages=PACKAGES,
-    package_data={SRC: ["assets/*"]},
-    package_dir={"": SRC},
+    package_data={PROJ_NAME: ["assets/*"]},
+    # When your source code is in a subdirectory under the project root, e.g.
+    # `src/`, it is necessary to specify the `package_dir` argument.
+    package_dir={"": SRC_CODE_DIR},
     include_package_data=True,
     install_requires=INSTALL_REQUIRES,
-    extras_require=EXTRA_REQUIRE,
     classifiers=CLASSIFIERS,
     zip_safe=True,
+    entry_points={
+        "console_scripts": [
+            f"run_ld49_game={PROJ_NAME}.main:main",
+        ]
+    },
 )
