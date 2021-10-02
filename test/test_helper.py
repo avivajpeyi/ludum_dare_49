@@ -9,7 +9,7 @@ def make_test_screen(test_name):
     width = 800
     heigth = 600
     screen = pygame.display.set_mode((width, heigth))
-    screen.fill(colors.WHITE)
+    screen.fill(colors.BLACK)
     pygame.display.set_caption(test_name)
     return screen
 
@@ -23,3 +23,15 @@ def should_i_quit():
             if event.key == pygame.K_BACKSPACE:
                 return True
     return False
+
+
+def main_runner(screen, func_list, func_args):
+    running = True
+    while running:
+        if should_i_quit():
+            running = False
+
+        for f, args in zip(func_list, func_args):
+            f(args)
+
+        pygame.display.flip()
