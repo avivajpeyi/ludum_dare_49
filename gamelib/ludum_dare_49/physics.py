@@ -10,7 +10,7 @@ from .constants import HEIGHT, WIDTH
 
 G = 5.0e6  # phoney gravitational constant
 
-DEBUG_PHYSICS = True
+DEBUG_PHYSICS = False
 
 
 class CollisionType(Enum):
@@ -28,6 +28,8 @@ class GamePhysicsHandler:
         self.update_frequency = update_frequency
         self.dt = 1.0 / self.update_frequency
         self.space.damping = 0.9
+        self.physics_game_objects = []
+
         self.DEBUG_MODE = DEBUG_PHYSICS
         if self.DEBUG_MODE:
             self.draw_options = pymunk.pygame_util.DrawOptions(screen)
@@ -37,6 +39,14 @@ class GamePhysicsHandler:
         if DEBUG_PHYSICS:
             self.space.debug_draw(self.draw_options)
         self.space.step(self.dt)
+
+    def track_object(self, game_object):
+        self.space.add(game_object.rigid_body, game_object.collider)
+        self.physics_game_objects.append(game_object)
+
+    def remove_object(self, game_object):
+        self.space.remove(game_object.rigid_body, game_object.collider)
+        self.physics_game_objects.remove(game_object)  ## THIS MAY NOT WORK
 
 
 def planet_gravity(
