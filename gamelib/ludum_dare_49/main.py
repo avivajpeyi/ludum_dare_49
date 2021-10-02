@@ -10,6 +10,5 @@ from . import game
 
 def main():
     """main entry point"""
-    print("add entry point")
     pygame.init()
     game.GameWindow()

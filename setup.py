@@ -32,6 +32,7 @@ INSTALL_REQUIRES = [
     "isort",
     "package_version",
     "interrogate",
+    "pygame-menu",
 ]
 
 
