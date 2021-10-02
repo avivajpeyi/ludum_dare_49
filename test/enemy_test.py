@@ -14,10 +14,15 @@ def test_enemy():
     clock = pygame.time.Clock()
 
     physics_handler = GamePhysicsHandler(screen, FPS)
-    planet = Planet(radius=20, screen=screen, color=colors.YELLOW)
+    planet = Planet(
+        size=40,
+        screen=screen,
+        color=colors.YELLOW,
+        physics_handler=physics_handler,
+    )
     enemy = Enemy(
-        x=5,
-        y=5,
+        x=50,
+        y=50,
         size=5,
         screen=screen,
         physics_handler=physics_handler,
@@ -43,7 +48,6 @@ def test_enemy():
         pygame.display.flip()
         clock.tick(FPS)
 
-        print(enemy.rigid_body.position)
         pygame.display.set_caption("fps: " + str(clock.get_fps()))
 
 

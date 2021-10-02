@@ -1,4 +1,5 @@
 import math
+from enum import Enum
 from typing import Optional
 
 import pygame
@@ -9,7 +10,13 @@ from .constants import HEIGHT, WIDTH
 
 G = 5.0e6  # phoney gravitational constant
 
-DEBUG_MODE = True
+DEBUG_PHYSICS = True
+
+
+class CollisionType(Enum):
+    ENEMY = 1
+    PLANET = 2
+    LASER = 3
 
 
 class GamePhysicsHandler:
@@ -21,9 +28,14 @@ class GamePhysicsHandler:
         self.update_frequency = update_frequency
         self.dt = 1.0 / self.update_frequency
         self.space.damping = 0.9
+        self.DEBUG_MODE = DEBUG_PHYSICS
+        if self.DEBUG_MODE:
+            self.draw_options = pymunk.pygame_util.DrawOptions(screen)
 
     def update(self):
         """Update the space for the given time step."""
+        if DEBUG_PHYSICS:
+            self.space.debug_draw(self.draw_options)
         self.space.step(self.dt)
 
 

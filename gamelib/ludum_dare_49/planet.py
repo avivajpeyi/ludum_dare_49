@@ -1,29 +1,30 @@
+import math
+
 import pygame
 import pymunk
 
 from . import colors
+from .game_object import GameObject
+from .physics import DEBUG_PHYSICS, CollisionType
 
 
-class Planet(object):
-    def __init__(
-        self, radius: int, screen: pygame.Surface, color=colors.BLACK
-    ):
-        screen_size = screen.get_size()
-        self.x = screen_size[0] / 2
-        self.y = screen_size[1] / 2
-        self.radius = radius
-        self.body = pymunk.Body()
-        self.screen = screen
-        self.color = color
-        self.rect = pygame.Rect(
-            self.x - radius, self.y - radius, radius * 2, radius * 2
-        )
+class Planet(GameObject):
+    def _init_rigid_body(self) -> pymunk.Body:
+        rigid_body = pymunk.Body(body_type=pymunk.Body.STATIC)
+        rigid_body.collision_type = CollisionType.PLANET.value
+        rigid_body.position = pymunk.Vec2d(self.x, self.y)
 
-    def draw(self):
-        """draw planet"""
-        pygame.draw.circle(
-            self.screen, self.color, self.rect.center, self.radius
-        )
+        return rigid_body
+
+    def _init_collider(self) -> pymunk.Circle:
+        col = pymunk.Circle(self.rigid_body, self.radius)
+        col.mass = 10
+        col.friction = 0.7
+        col.damping = 0.9
+        col.elasticity = 0
+        if self.physics_handler.DEBUG_MODE:
+            col.color = pygame.Color("red")  # colors the collider
+        return col
 
     def check_for_collision(self):
         """
