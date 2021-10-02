@@ -24,7 +24,7 @@ class Player(GameObject):
         Initialize the player, which is a rotating triangle.
         Set the initial color, shape, and orientation.
         """
-        super().__init__(size, screen, color, x=x, y=y)
+        super().__init__(size=size, screen=screen, color=color, x=x, y=y)
         self.theta = 0
         self.rotation_speed = 4
         self.aspect_ratio = 2  # height / width of isosceles triangle
