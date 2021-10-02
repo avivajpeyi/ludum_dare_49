@@ -1,7 +1,6 @@
 # ---
 # jupyter:
 #   jupytext:
-#     formats: ipynb,py:light
 #     text_representation:
 #       extension: .py
 #       format_name: light
@@ -13,54 +12,44 @@
 #     name: python3
 # ---
 
-# +
 # Copying instructions from other screen
 import pygame
 
-# +
-# display(HTML("<style>.container { width:100% !important; }</style>"))
-# -
+display(HTML("<style>.container { width:100% !important; }</style>"))
 
 
 
 pygame.init()
 
+# +
 # Wrap everything in a try except loop
 try:
 
     ### Setup static objects
 
     # Set up draw window
-    screen = pygame.display.set_mode([500, 500])
-
-    """These need to be redrawn each time
-    # Make it white
-    screen.fill((255, 255, 255))
-
-    # Draw blue circle in center
-    pygame.draw.circle(screen, (0, 0, 255), (250, 250), 75)
-    # Add a green ellipse
-    pygame.draw.ellipse(screen, (0, 255, 0), (250, 250, 50, 30), 0)
-    """
+    SCREEN_SIZE = 1000
+    screen = pygame.display.set_mode([SCREEN_SIZE, SCREEN_SIZE])
 
     ### Create the triangle character here
     class Player(pygame.sprite.Sprite):
         def __init__(self):
             """
-            TODO
+            Initialize the player, which is a rotating triangle.
+            Set the initial color, shape, and orientation.
             """
             super(Player, self).__init__()
             self.color = (255, 0, 0)
             self.theta = 0
             self.rotation_speed = 0.1
-            self.center = (250, 250)
+            self.center = (SCREEN_SIZE/2.0, SCREEN_SIZE/2.0)
             self.aspect_ratio = 3  # height / width of isosceles triangle
-            self.scale = 50  # how big to make it
+            self.scale = SCREEN_SIZE/20.0  # how big to make it
             self.relative_corners = self.get_relative_corners()
 
         def get_relative_corners(self):
             """
-            Definition
+            Calculate the initial corner coordinates from the aspect ratio and scale
             """
             aspect_ratio = self.aspect_ratio
             scale = self.scale
@@ -73,7 +62,7 @@ try:
 
         def draw(self):
             """
-            TODO
+            Function to draw (or redraw) the triangle
             """
             coordinates = [
                 [sum(coords) for coords in zip(self.center, corner)]
@@ -83,7 +72,7 @@ try:
 
         def rotate(self, pressed_keys):
             """
-            TODO
+            Rotate the triangle a fixed amount if the relevant keys are held down
             """
             if pressed_keys[pygame.K_LEFT]:
                 self.theta -= self.rotation_speed
@@ -92,7 +81,7 @@ try:
 
         def update(self, pressed_keys):
             """
-            TODO
+            Update the direction of the triangle in response to rotation
             """
             self.rotate(pressed_keys)
             self.relative_corners = [
@@ -102,6 +91,12 @@ try:
             # reset theta to 0
             self.theta = 0
             self.draw()
+            
+    class Laser(pygame.sprite.Sprite):
+        def __init__(self):
+            self.color = (255, 255, 0)
+            self.theta = 0
+            
 
     # Create player Fred and place on screen
     fred = Player()
@@ -129,18 +124,25 @@ try:
         pressed_keys = pygame.key.get_pressed()
         fred.update(pressed_keys)
 
-        pygame.draw.circle(screen, (0, 0, 0), (250, 250), 75)
+        pygame.draw.circle(screen, (0, 0, 0), \
+                           (SCREEN_SIZE/2.0, SCREEN_SIZE/2.0), SCREEN_SIZE/10.0)
         pygame.display.flip()
-
-
+        
 except Exception as e:
     exc_type, exc_obj, exc_tb = sys.exc_info()
     fname = os.path.split(exc_tb.tb_frame.f_code.co_filename)[1]
     print(exc_type, fname, exc_tb.tb_lineno)
     print(e)
-
-
+    
+    
 pygame.quit()
+# -
 
 
-# +
+
+
+
+
+
+
+
