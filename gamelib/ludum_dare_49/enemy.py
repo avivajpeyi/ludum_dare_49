@@ -9,7 +9,7 @@ from .physics import CollisionType, G, planet_gravity
 
 class Enemy(GameObject):
     def _init_rigid_body(self) -> pymunk.Body:
-        rigid_body = pymunk.Body()
+        rigid_body = pymunk.Body(pymunk.Body.KINEMATIC)
 
         rigid_body.collision_type = CollisionType.ENEMY.value
         rigid_body.position = pymunk.Vec2d(self.x, self.y)

@@ -52,7 +52,6 @@ class GameObject(ABC):
         is_obj = (
                 self.rigid_body is not None
                 and self.physics_handler is not None
-                and self.collider is not None
         )
         return is_obj
 
@@ -95,10 +94,10 @@ class GameObject(ABC):
 
 
     def update(self) -> None:
-        self.draw()
         if self.is_physics_object:
             self.rect.center = self.rigid_body.position
             self.handle_collision_with_enemy()
+        self.draw()
 
     def destroy(self) -> None:
         """Remove from physics handler"""
