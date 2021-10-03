@@ -7,5 +7,5 @@ REAL_HEIGHT = 360
 WIDTH = REAL_WIDTH * SCALE
 HEIGHT = REAL_HEIGHT * SCALE
 
-FONT_MAIN = asset_loader.filepath("font_path.ttf")
+FONT_MAIN = asset_loader.filepath("fonts/font.ttf")
 SOUND_VOLUME = 0.4
