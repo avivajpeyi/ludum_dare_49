@@ -6,19 +6,19 @@ from typing import Optional, Tuple
 import pygame
 
 from .colors import WHITE
-from .physics import GamePhysicsHandler
+from .physics import GamePhysicsHandler, CollisionType
 
 
 class GameObject(ABC):
     def __init__(
-        self,
-        size: int,
-        screen: pygame.Surface,
-        color=WHITE,
-        # If x y init pos not provided, then we set to screen center
-        x: Optional[int] = None,
-        y: Optional[int] = None,
-        physics_handler: Optional[GamePhysicsHandler] = None,
+            self,
+            size: int,
+            screen: pygame.Surface,
+            color=WHITE,
+            # If x y init pos not provided, then we set to screen center
+            x: Optional[int] = None,
+            y: Optional[int] = None,
+            physics_handler: Optional[GamePhysicsHandler] = None,
     ):
         self.size = size
         self.screen = screen
@@ -33,10 +33,8 @@ class GameObject(ABC):
         self.physics_handler = physics_handler
         self.rigid_body = self._init_rigid_body()
         self.collider = self._init_collider()
+        self.rect = self._init_rect()
 
-        self.rect = pygame.Rect(
-            self.x - size / 2, self.y - size / 2, size * 2, size * 2
-        )
         if self.is_physics_object:
             physics_handler.track_object(self)
 
@@ -47,9 +45,9 @@ class GameObject(ABC):
     @property
     def is_physics_object(self) -> bool:
         is_obj = (
-            self.rigid_body is not None
-            and self.physics_handler is not None
-            and self.collider is not None
+                self.rigid_body is not None
+                and self.physics_handler is not None
+                and self.collider is not None
         )
         return is_obj
 
@@ -118,6 +116,7 @@ class GameObject(ABC):
         self.draw()
         if self.is_physics_object:
             self.rect.center = self.rigid_body.position
+            self.check_for_collision_with_enemy()
 
     def destroy(self) -> None:
         """Remove from physics handler"""
@@ -133,3 +132,18 @@ class GameObject(ABC):
     def _init_collider(self) -> None:
         """create a pymunk collider and return it"""
         return None
+
+    def _init_rect(self) -> pygame.Rect:
+        return pygame.Rect(
+            self.x - self.size / 2, self.y - self.size / 2,
+            self.size * 2, self.size * 2
+        )
+
+    def check_for_collision_with_enemy(self):
+        if self.rigid_body.collision_type == CollisionType.ENEMY.value:
+            return
+
+        for game_object in self.physics_handler.physics_game_objects:
+            if (game_object.rigid_body.collision_type == CollisionType.ENEMY.value):
+                if self.rect.colliderect(game_object.rect):
+                    game_object.destroy()
