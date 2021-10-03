@@ -8,8 +8,6 @@ from .physics import GamePhysicsHandler
 
 class EnemyFactory(object):
     def __init__(self, screen_handler, physics_handler):
-        # TODO
-        # get information about n enemies and time
         self.screen_handler = screen_handler
         self.physics_handler = physics_handler
         self.start_time = pygame.time.get_ticks()
@@ -33,7 +31,7 @@ class EnemyFactory(object):
             [
                 self.create_new_enemy(self.pick_color())
                 for _ in range(num_new_enemies)
-            ]  # first wave
+            ]
 
     def pick_color(self):
         duration = pygame.time.get_ticks() - self.start_time
@@ -43,10 +41,15 @@ class EnemyFactory(object):
             return [const.COL_TYPE1, const.COL_TYPE2][np.random.choice(2)]
 
     def create_new_enemy(self, color):
+        diag = 2 * self.screen_handler.half_screen_diag
+        r_draw = (
+            diag * np.random.rand() + diag
+        )  # random sample between r and 2r
+        theta = 2 * np.pi * np.random.rand()
+
         Enemy(
-            # TODO: instantiate off screen
-            x=np.random.randint(0, const.WIDTH),
-            y=np.random.randint(0, const.HEIGHT),
+            x=r_draw * np.cos(theta),
+            y=r_draw * np.sin(theta),
             size=const.ENEMY_SIZE,
             screen_handler=self.screen_handler,
             physics_handler=self.physics_handler,
