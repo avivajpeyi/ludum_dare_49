@@ -1,15 +1,15 @@
-import math
 from typing import Optional
 
 import numpy as np
 import pygame
 import pymunk
-
 from ludum_dare_49 import colors
 from ludum_dare_49.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
 
 from .game_object import GameObject
-from .physics import CollisionType, GamePhysicsHandler
+from .physics import (
+    CollisionType, GamePhysicsHandler
+)
 
 
 class Laser(GameObject):
@@ -25,9 +25,11 @@ class Laser(GameObject):
         """
         self.screen = screen
         self.angle = angle
+
         self.color = color
         self.speed = LASER_SPEED
         self.r = 50  # separation from center of the sceen # TODO
+        self.dir_vector = self.get_direction_vector()
         self.x = self.r * np.cos(self.angle) + self.screen_center[0]
         self.y = self.r * np.sin(self.angle) + self.screen_center[1]
         self.length = LASER_LENGTH
@@ -41,6 +43,9 @@ class Laser(GameObject):
             physics_handler=physics_handler,
         )
 
+    def get_direction_vector(self):
+        return (np.cos(self.angle), np.sin(self.angle))
+
     def _init_rect(self) -> pygame.Rect:
         return pygame.Rect(
             self.x - self.width / 2,
@@ -49,8 +54,9 @@ class Laser(GameObject):
             self.length,
         )
 
+
     def _init_rigid_body(self) -> pymunk.Body:
-        rigid_body = pymunk.Body()
+        rigid_body = pymunk.Body(pymunk.Body.KINEMATIC)
         rigid_body.collision_type = CollisionType.LASER.value
         rigid_body.angle = self.angle + np.pi / 2
         rigid_body.velocity = [
@@ -67,24 +73,30 @@ class Laser(GameObject):
             [0, self.length / 2],
             self.width,
         )
-
-        col.mass = 10000
+        col.mass = 1
         col.friction = 0.0
         col.damping = 0.0
         col.elasticity = 0
-
+        col.filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS()^CollisionType.ENEMY.value)
         return col
 
     def get_collider_world_bounds(self):
-        p1 = self.rigid_body.local_to_world(self.collider.a)
-        p2 = self.rigid_body.local_to_world(self.collider.b)
+        p1 = self.rigid_body.local_to_world((0, self.length/2))
+        p2 = self.rigid_body.local_to_world((0, -self.length/2))
         return p1, p2
 
     def draw(self):
         p1, p2 = self.get_collider_world_bounds()
-        pygame.draw.line(self.screen, self.color, p1, p2, self.width)
+        self.rect = pygame.draw.line(self.screen, self.color, p1,p2, self.width)
 
-    def update(self):
+    def update(self) -> None:
+        self.draw()
+        if self.is_physics_object:
+            (x, y) = self.rigid_body.position
+            self.rect.center = x, y
+            self.rect.midtop = (x + self.dir_vector[0] * self.length / 2, y + self.dir_vector[1] * self.length / 2)
+            self.handle_collision_with_enemy()
+
         super().update()
         # If laser leaves the screen, delete it
         if self.distance_to_center > self.half_screen_diag:

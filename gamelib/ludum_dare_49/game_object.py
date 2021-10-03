@@ -25,8 +25,6 @@ class GameObject(ABC):
         self.size = size
         self.screen = screen
         self.color = color
-        self.type = 0
-
         if x is None:
             self.x, self.y = self.screen_center
         else:
@@ -92,10 +90,10 @@ class GameObject(ABC):
             pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
 
     def update(self) -> None:
-        self.draw()
         if self.is_physics_object:
             self.rect.center = self.rigid_body.position
             self.handle_collision_with_enemy()
+        self.draw()
 
     def destroy(self) -> None:
         """Remove from physics handler"""
@@ -138,8 +136,7 @@ class GameObject(ABC):
 
         if collided_with_enemy:
             if self.rigid_body.collision_type == CollisionType.LASER.value:
-                if self.type == collided_enemy.type:
-
+                if self.color == collided_enemy.color:
                     collided_enemy.destroy()
                     pygame.event.post(SCORE_INCREASE)
 

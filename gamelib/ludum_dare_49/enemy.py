@@ -3,15 +3,13 @@ import math
 import pygame
 import pymunk
 
-from ludum_dare_49 import colors
-
 from .game_object import GameObject
 from .physics import CollisionType, G, planet_gravity
 
 
 class Enemy(GameObject):
     def _init_rigid_body(self) -> pymunk.Body:
-        rigid_body = pymunk.Body()
+        rigid_body = pymunk.Body(pymunk.Body.KINEMATIC)
 
         rigid_body.collision_type = CollisionType.ENEMY.value
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
@@ -21,7 +19,7 @@ class Enemy(GameObject):
         # starting position. (dampening prevents circular orbit)
         r = rigid_body.position.get_distance(self.screen_center)
         v = math.sqrt(G / r) / r
-        v = v * 0.6
+        # v = v * 0.6
         vec_to_center = rigid_body.position - pymunk.Vec2d(*self.screen_center)
         rigid_body.velocity = vec_to_center.perpendicular() * v
 
@@ -40,6 +38,7 @@ class Enemy(GameObject):
         col.friction = 0.7
         col.damping = 0.9
         col.elasticity = 1
+        col.filter = pymunk.ShapeFilter(categories=CollisionType.ENEMY.value)
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("white")  # colors the collider
         return col

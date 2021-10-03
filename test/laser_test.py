@@ -11,7 +11,6 @@ from ludum_dare_49.planet import Planet
 def test_laser():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    print(WIDTH, HEIGHT)
 
     clock = pygame.time.Clock()
 
