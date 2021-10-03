@@ -15,6 +15,7 @@ from .physics import GamePhysicsHandler
 from .planet import Planet
 from .player import Player
 from .ui import TitleMenu
+from .score_manager import ScoreManager
 
 PLAY_BACKGROUND_MUSIC = False
 
@@ -58,7 +59,7 @@ class Game:
         self.game_over = False
         self.clock = pygame.time.Clock()
         self.physics_handler = GamePhysicsHandler(self.screen, const.FPS)
-
+        self.score_manger = ScoreManager()
         self.update_full_screen = False
         self.fullscreen = False
 
@@ -131,6 +132,7 @@ class Game:
             for go in self.physics_handler.physics_game_objects:
                 go.update()
             self.physics_handler.update()
+            self.score_manger.draw_score_on_top_right()
 
             pygame.display.flip()
             self.clock.tick(const.FPS)
