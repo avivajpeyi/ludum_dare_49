@@ -62,7 +62,7 @@ class Laser(GameObject):
             self.speed * np.sin(self.angle),
         ]
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
-        print("laser pos: ", rigid_body.position)
+        #print("laser pos: ", rigid_body.position)
         # velocity_direction = (
         #    rigid_body.position - pymunk.Vec2d(*self.screen_center)
         # ).normalized()
@@ -125,3 +125,15 @@ class Laser(GameObject):
         # Figure out what I can replace the 10 with here!
         pygame.draw.line(self.screen, self.color, p1, p2, self.width)
         # pygame.draw.line(self.screen, self.color, self.shape.a, self.shape.b, 10)
+
+    def update(self):
+        super().update()
+        # If laser leaves the screen, delete it
+        if self.distance_to_center > self.half_screen_diag:
+            self.destroy()
+
+
+
+
+
+
