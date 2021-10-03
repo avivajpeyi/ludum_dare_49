@@ -147,6 +147,7 @@ class Game:
                 go.update()
             self.physics_handler.update()
             self.score_manger.draw_score_on_top_right()
+            self.planet.update()
 
             pygame.display.flip()
             self.clock.tick(const.FPS)

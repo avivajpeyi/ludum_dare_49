@@ -77,7 +77,7 @@ class Laser(GameObject):
         col.friction = 0.0
         col.damping = 0.0
         col.elasticity = 0
-        col.filter = pymunk.ShapeFilter(categories= CollisionType.LASER.value)
+        col.filter = pymunk.ShapeFilter(mask=pymunk.ShapeFilter.ALL_MASKS()^CollisionType.ENEMY.value)
         return col
 
     def get_collider_world_bounds(self):

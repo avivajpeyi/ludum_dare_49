@@ -19,7 +19,7 @@ class Enemy(GameObject):
         # starting position. (dampening prevents circular orbit)
         r = rigid_body.position.get_distance(self.screen_center)
         v = math.sqrt(G / r) / r
-        v = v * 0.6
+        # v = v * 0.6
         vec_to_center = rigid_body.position - pymunk.Vec2d(*self.screen_center)
         rigid_body.velocity = vec_to_center.perpendicular() * v
 
@@ -38,7 +38,7 @@ class Enemy(GameObject):
         col.friction = 0.7
         col.damping = 0.9
         col.elasticity = 1
-        col.filter = pymunk.ShapeFilter(categories= CollisionType.ENEMY.value)
+        col.filter = pymunk.ShapeFilter(categories=CollisionType.ENEMY.value)
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("white")  # colors the collider
         return col
