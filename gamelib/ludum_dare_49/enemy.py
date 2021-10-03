@@ -1,11 +1,13 @@
 import math
 
+import numpy as np
 import pygame
 import pymunk
 
+from ludum_dare_49.constants import COL_TYPE1
+
 from .game_object import GameObject
 from .physics import CollisionType, G, planet_gravity
-from ludum_dare_49.constants import COL_TYPE1
 
 
 class Enemy(GameObject):
@@ -23,12 +25,17 @@ class Enemy(GameObject):
         # v = v * 0.6
         # Reverse direction for enemies with COLOR1
         if self.color == COL_TYPE1:
-            v *= -1 
-        vec_to_center = rigid_body.position - pymunk.Vec2d(*self.screen_handler.screen_center)
+            v *= -1
+        vec_to_center = rigid_body.position - pymunk.Vec2d(
+            *self.screen_handler.screen_center
+        )
         # Aim the enemy randomly between the circular orbit and directed at the player
-        rigid_body.velocity = pygame.math.Vector2(
-                                    v* vec_to_center.perpendicular()
-                              ).rotate_rad(2*np.pi*np.random.rand())
+        circular_velocity = v * vec_to_center.perpendicular()
+        rigid_body.velocity = [
+            *pygame.math.Vector2(circular_velocity).rotate_rad(
+                np.pi / 2 * np.random.rand()
+            )
+        ]
 
         # Set the box's angular velocity to match its orbital period and
         # align its initial angle with its position.

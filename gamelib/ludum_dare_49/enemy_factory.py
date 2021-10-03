@@ -41,13 +41,15 @@ class EnemyFactory(object):
             return [const.COL_TYPE1, const.COL_TYPE2][np.random.choice(2)]
 
     def create_new_enemy(self, color):
-        diag = 2* self.screen.half_screen_diag
-        r_draw = diag*np.random.rand() + diag # random sample between r and 2r
-        theta = np.random.rand(0, 2*np.pi)
+        diag = 2 * self.screen_handler.half_screen_diag
+        r_draw = (
+            diag * np.random.rand() + diag
+        )  # random sample between r and 2r
+        theta = 2 * np.pi * np.random.rand()
 
         Enemy(
-            x=r_draw*np.cos(theta)
-            y=r_draw*np.sin(theta)
+            x=r_draw * np.cos(theta),
+            y=r_draw * np.sin(theta),
             size=const.ENEMY_SIZE,
             screen_handler=self.screen_handler,
             physics_handler=self.physics_handler,
