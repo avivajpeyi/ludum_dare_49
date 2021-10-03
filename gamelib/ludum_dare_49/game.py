@@ -10,8 +10,8 @@ import pygame
 
 from . import __NAME__, asset_loader, colors
 from . import constants as const
+from . import image_tools
 from .custom_events import GAME_OVER, SCORE_INCREASE
-
 from .enemy_factory import EnemyFactory
 from .physics import GamePhysicsHandler
 from .planet import Planet
@@ -27,7 +27,6 @@ class GameWindow:
     def __init__(self):
         pygame.display.set_caption(__NAME__)
         self.screen_handler = ScreenHandler()
-
 
         if PLAY_BACKGROUND_MUSIC:
             self.play_background_music()
@@ -45,7 +44,9 @@ class GameWindow:
     def main_loop(self):
         while self.restart:
             if not self.game_is_running:
-                title_screen = TitleMenu(self.screen_handler.screen, self.start_game)
+                title_screen = TitleMenu(
+                    self.screen_handler.screen, self.start_game
+                )
                 title_screen.update()
 
     def start_game(self):
@@ -56,25 +57,28 @@ class GameWindow:
         self.restart = self.game.restart  # allow game to control execution
         self.game_is_running = False
 
+
 class Game:
-    def __init__(self, screen_handler:ScreenHandler):
+    def __init__(self, screen_handler: ScreenHandler):
         self.screen_handler = screen_handler
         self.is_paused = False
         self.restart = True
         self.game_over = False
         self.clock = pygame.time.Clock()
-        self.physics_handler = GamePhysicsHandler(self.screen_handler, const.FPS)
+        self.physics_handler = GamePhysicsHandler(
+            self.screen_handler, const.FPS
+        )
         self.score_manger = ScoreManager()
         self.update_full_screen = False
         self.fullscreen = False
-
+        self.init_data()
         self.init_scene()
 
     def init_scene(self):
         self.planet = Planet(
             size=40,
             screen_handler=self.screen_handler,
-            color=colors.YELLOW,
+            color=const.PLANET_COLOR,
             physics_handler=self.physics_handler,
         )
         self.enemy_factory = EnemyFactory(
@@ -85,6 +89,11 @@ class Game:
             size=int(self.planet.size * 0.75),
             screen_handler=self.screen_handler,
             physics_handler=self.physics_handler,
+        )
+
+    def init_data(self):
+        self.bgk_image = image_tools.change_image_alpha(
+            const.BACKGROUND_IMAGE, 50
         )
 
     def on_keydown(self, event):
@@ -125,16 +134,20 @@ class Game:
             if event == SCORE_INCREASE:
                 self.score_manger.increase_score()
 
+    def draw_background(self):
+        self.screen_handler.screen.fill(const.BACKGROUND_COLOR)
+        rect = self.bgk_image.get_rect()
+        rect.center = self.screen_handler.screen_center
+        self.screen_handler.screen.blit(self.bgk_image, rect)
+
     def update(self):
         while not self.game_over:
             self.process_events()
-
-            self.screen_handler.screen.fill(pygame.Color("black"))
-
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
             self.enemy_factory.update()
 
+            self.draw_background()
             for go in self.physics_handler.physics_game_objects:
                 go.update()
             self.physics_handler.update()
