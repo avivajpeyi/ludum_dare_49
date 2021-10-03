@@ -87,7 +87,7 @@ class GameObject(ABC):
         self.draw()
         if self.is_physics_object:
             self.rect.center = self.rigid_body.position
-            self.check_for_collision_with_enemy()
+            self.handle_collision_with_enemy()
 
     def destroy(self) -> None:
         """Remove from physics handler"""
@@ -110,11 +110,26 @@ class GameObject(ABC):
             self.size * 2, self.size * 2
         )
 
-    def check_for_collision_with_enemy(self):
+    def handle_collision_with_enemy(self):
         if self.rigid_body.collision_type == CollisionType.ENEMY.value:
-            return
+            return  # ignore enemy collisions
+
+        collided_with_enemy = False
+        collided_enemy = None
 
         for game_object in self.physics_handler.physics_game_objects:
-            if (game_object.rigid_body.collision_type == CollisionType.ENEMY.value):
+            if game_object.rigid_body.collision_type == CollisionType.ENEMY.value:
                 if self.rect.colliderect(game_object.rect):
-                    game_object.destroy()
+                    collided_with_enemy = True
+                    collided_enemy = game_object
+
+        if collided_with_enemy:
+            if self.rigid_body.collision_type == CollisionType.LASER.value:
+                # if i am a laser
+                print("Score +1")
+                collided_enemy.destroy()
+            if self.rigid_body.collision_type == CollisionType.PLANET.value:
+                # if i am planet
+                print("GAME OVER, BITCH")
+                collided_enemy.destroy()
+                # self.destroy()
