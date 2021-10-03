@@ -16,6 +16,7 @@ from .planet import Planet
 from .player import Player
 from .ui import TitleMenu
 from .score_manager import ScoreManager
+from .custom_events import SCORE_INCREASE, GAME_OVER
 
 PLAY_BACKGROUND_MUSIC = False
 
@@ -119,6 +120,11 @@ class Game:
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
                 self.on_keydown(event)
+
+            if event == GAME_OVER:
+                print("GAME OVER, BITCH")
+            if event == SCORE_INCREASE:
+                self.score_manger.increase_score()
 
     def update(self):
         while not self.game_over:

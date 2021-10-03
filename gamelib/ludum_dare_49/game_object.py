@@ -7,7 +7,8 @@ import pygame
 
 from .colors import WHITE
 from .physics import GamePhysicsHandler, CollisionType
-
+from .score_manager import ScoreManager
+from .custom_events import SCORE_INCREASE, GAME_OVER
 
 
 
@@ -21,6 +22,7 @@ class GameObject(ABC):
             x: Optional[int] = None,
             y: Optional[int] = None,
             physics_handler: Optional[GamePhysicsHandler] = None,
+            score_handler: Optional[ScoreManager] = None,
     ):
         self.size = size
         self.screen = screen
@@ -91,29 +93,6 @@ class GameObject(ABC):
         if self.physics_handler.DEBUG_MODE:
             pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
 
-    #def is_within_screen_bounds(self, buff=1):
-    #    """
-    #    Returns a boolean for whether the object is contained within the screen bounds.
-    #    buff is an optional scaling buffer for how far outside the screen bounds the object can be
-    #    """
-    #    slf_x, slf_y = self.x, self.y
-    #    ctr_x, ctr_y = self.screen_center
-    #    scr_x, scr_y = self.screen_size
-    #    half_width = scr_x/2
-    #    half_height= scr_y/2
-
-    #    # If the abs separation between the coordinate and center (in either direction) is greater than
-    #    # than half the screen size in that direction (times the buffer), then return False
-
-    #    print("is within bounds called")
-    #    print("dist_x: ", abs(slf_x - ctr_x)) 
-    #    print("dist_y: ", abs(slf_y - ctr_y)) 
-    #    if (abs(slf_x - ctr_x) > buff*half_width) | (abs(slf_y - ctr_y) > buff*half_height):
-    #        print("false")
-    #        return False
-    #    print('true')
-    #    return True
-
 
     def update(self) -> None:
         self.draw()
@@ -158,12 +137,12 @@ class GameObject(ABC):
         if collided_with_enemy:
             if self.rigid_body.collision_type == CollisionType.LASER.value:
                 if self.type == collided_enemy.type:
-                    print("Score +1")
+
                     collided_enemy.destroy()
+                    pygame.event.post(SCORE_INCREASE)
 
 
             if self.rigid_body.collision_type == CollisionType.PLANET.value:
                 # if i am planet
-                print("GAME OVER, BITCH")
                 collided_enemy.destroy()
-                # self.destroy()
+                pygame.event.post(GAME_OVER)
