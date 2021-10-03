@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from typing import Optional 
 
 import pygame
@@ -6,15 +7,15 @@ import pymunk
 
 from .game_object import GameObject
 from .physics import CollisionType, GamePhysicsHandler
+from ludum_dare_49 import colors
 
 
 class Laser(GameObject):
     def __init__(self,
         screen: pygame.Surface,
         size: int,
-        color,
-        x: float,
-        y: float,
+        angle: float,
+        color=colors.YELLOW,
         physics_handler: Optional[GamePhysicsHandler] = None, # TODO: this isn't really optional
     ):
         """
@@ -23,44 +24,57 @@ class Laser(GameObject):
 
         # TODO: take in only the position (later, of the player) and create a vector from the center
         self.screen = screen
-        self.speed = 0.0000001
-        self.body = pymunk.Body()
-        self.shape = pymunk.Segment(self.body, [0, 0], [0, 50], 20)
-        super().__init__(size=size, screen=screen, color=color, x=x, y=y, physics_handler=physics_handler)
-        self.draw()
+        self.angle = angle
+        self.speed = 30
+        self.r = 50 # separation from center
+        self.x = self.r*np.cos(self.angle) + self.screen_center[0]
+        self.y = self.r*np.sin(self.angle) + self.screen_center[1]
+        self.length = 50
+        self.width = 1
+        #self.body = pymunk.Body()
+        #self.shape = pymunk.Segment(self.body, [0, 0], [0, 50], 20)
+        print(physics_handler)
+        super().__init__(size=size, screen=screen, color=color, x=self.x, y=self.y, physics_handler=physics_handler)
+        #self.draw()
         #self.fire()
 
-    #def get_shape(self):
-    #    pymunk.Segment(self.body, 
+    # TODO: Add in a destroyer if the object leaves the game screen
+
+    # TODO: fix the laser to be rectangular not quadrilateral on rotation
 
     def _init_rigid_body(self) -> pymunk.Body:
         # TODO: clean this up
-        rigid_body = self.body
+        rigid_body = pymunk.Body()
         rigid_body.collision_type = CollisionType.LASER.value
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
         print("laser pos: ", rigid_body.position)
         velocity_direction = (rigid_body.position - pymunk.Vec2d(*self.screen_center)).normalized()
         rigid_body.velocity = self.speed* velocity_direction
-        print("laser vel: ", self.body.velocity)
+        
+        rigid_body.angle = math.atan2( velocity_direction[0], -velocity_direction[1])
+        #rigid_body.angle = 0
+        #velocity_direction = pymunk.Vec2d([0, 0], [100, 100]).normalized() # fixed vel
+        #rigid_body.velocity = 50, 50
+        #print("laser vel: ", rigid_body.velocity)
         # align its initial angle with its position.
-        # TODO: change to vector of difference from center of screen
-        #rigid_body.angle = math.atan2(
-        #    rigid_body.position.y, rigid_body.position.x
-        #)
-        rigid_body.angle = 0
-
+        # done: change to vector of difference from center of screen
 
         return rigid_body
 
     def _init_collider(self) -> pymunk.Circle:
-        col = pymunk.Circle(self.rigid_body, self.radius)
-        # TODO: Don't use a circle
-        col.mass = 0
-        col.friction = 0.9
+        col = pymunk.Segment(self.rigid_body, [0, -self.length/2], [0, self.length/2], self.width)
+        #[self.length*np.cos(self.rigid_body.angle),
+        #self.length*np.sin(self.rigid_body.angle)]
+        col.mass = 1
+        col.friction = 0.0
         col.damping = 0.0
         col.elasticity = 0
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("blue")  # colors the collider
+        #self.shape = pymunk.Segment(self.body, [0, 0], [0, 50], 20)
+        #col = pymunk.Segk(self.rigid_body, self.radius)
+        # done: Don't use a circle
+
         return col
 
 
@@ -68,31 +82,26 @@ class Laser(GameObject):
         #print(self.body.velocity)
         #print(self.color)
         
-        p1 = self.body.local_to_world(self.shape.a)
-        p2 = self.body.local_to_world(self.shape.b)
+        #print(dir(self.rigid_body))
+        #print(dir(self.collider))
+        #print(self.rigid_body.local_to_world())
+        #print(self.rigid_body.position)
+        #print(self.rigid_body.center_of_gravity)
+        #print(self.rigid_body.local_to_world())
+
+        #print(self.collider._shape[0])
+        #p1, p2 = self.collider._shape
+        p1 = self.rigid_body.local_to_world(self.collider.a)
+        p2 = self.rigid_body.local_to_world(self.collider.b)
         #TODO: This is the source of the problem!
-        #p1 = self.shape.a
-        #p2 = self.shape.b
-        print("vel: ", self.body.velocity, " == pos: ", p1, p2)
+        #p1 = self.collider.a
+        #p2 = self.collider.b
+        #p1 = self.rigid_body.position
+        #p2 = [p1[0], p1[1]+self.length]
+
+        print("vel: ", self.rigid_body.velocity, " == pos: ", p1, p2)
 
         # Figure out what I can replace the 10 with here!
-        pygame.draw.line(self.screen, self.color, p1, p2, 10)
-        pygame.draw.line(self.screen, self.color, self.shape.a, self.shape.b, 10)
+        pygame.draw.line(self.screen, self.color, p1, p2, self.width)
+        #pygame.draw.line(self.screen, self.color, self.shape.a, self.shape.b, 10)
                 
-
-    #def update(self):
-
-
-
-    # def __del__(self):
-
-    #def get_position(self):
-    #    r = self.radius
-    #    theta = self.theta
-    #    center = self.origin
-
-    #    relative_offset = (radius * np.cos(theta), radius * np.sin(theta))
-    #    return [sum(coords) for coords in zip(center, relative_offset)]
-
-    # def fire(self):
-

@@ -5,6 +5,7 @@ import pygame
 import pymunk
 
 from ludum_dare_49 import colors
+from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler
@@ -19,12 +20,15 @@ class Player(GameObject):
         color,
         x: Optional[int] = None,
         y: Optional[int] = None,
+        physics_handler: Optional[GamePhysicsHandler] = None, # Not optional!
     ):
         """
         Initialize the player, which is a rotating triangle.
         Set the initial color, shape, and orientation.
         """
-        super().__init__(size=size, screen=screen, color=color, x=x, y=y)
+        super().__init__(size=size, screen=screen, color=color, x=x, y=y, physics_handler=physics_handler)
+        self.screen = screen
+        self.physics_handler = physics_handler
         self.theta = 0
         self.rotation_speed = 4
         self.aspect_ratio = 2  # height / width of isosceles triangle
@@ -60,8 +64,8 @@ class Player(GameObject):
             self.rotate(pressed_keys)
 
         # If spacebar pressed, fire laser
-        # if pressed_keys[pygame.K_SPACE]:
-        # self.fire_laser()
+        if pressed_keys[pygame.K_SPACE]:
+            self.fire_laser()
 
         self.draw()
 
@@ -82,6 +86,12 @@ class Player(GameObject):
             for p in self.relative_vertices
         ]
 
-    # def fire_laser(self):
-    #    radius = self.aspect_ratio * self.size
-    #    laser = Laser(self.center, radius, self.theta)
+    def fire_laser(self):
+       radius = self.aspect_ratio * self.size
+       laser = Laser(screen=self.screen, physics_handler=self.physics_handler, angle=self.theta, size=200) # TODO: remove size later
+       laser.draw()
+
+
+
+
+

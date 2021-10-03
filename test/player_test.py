@@ -21,9 +21,10 @@ def test_player():
         physics_handler=physics_handler,
     )
     player = Player(
-        size=WIDTH/15.0,
+        size=WIDTH/40.0,
         screen=screen,
         color=colors.GREEN,
+        physics_handler=physics_handler,
     )
     player.draw()
 
@@ -42,7 +43,9 @@ def test_player():
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
         player.update(pressed_keys)
-        # physics_handler.update()
+        for go in physics_handler.physics_game_objects:
+            go.update()
+        physics_handler.update()
         planet.draw()
         pygame.display.flip()
         clock.tick(FPS)
