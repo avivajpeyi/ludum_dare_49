@@ -37,7 +37,7 @@ INSTALL_REQUIRES = [
     "pyaudio",
     "pi-clap",
     # air gesture
-    "opencv-python"
+    "opencv-python",
 ]
 
 
