@@ -13,11 +13,11 @@ FONT_MAIN = asset_loader.filepath("fonts/font.ttf")
 SOUND_VOLUME = 0.4
 
 # Constants for objects
-ROTATION_SPEED = 0.1
+ROTATION_SPEED = 0.2
 COL_TYPE1 = colors.RED
 COL_TYPE2 = colors.BLUE
-REFIRE_DELAY = 500  # ms
-LASER_SPEED = 300
-LASER_LENGTH = 50
+REFIRE_DELAY = 300  # ms
+LASER_SPEED = 1000
+LASER_LENGTH = 30
 LASER_WIDTH = 1
 ENEMY_SIZE = 10
