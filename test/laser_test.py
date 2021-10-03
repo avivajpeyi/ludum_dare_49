@@ -25,7 +25,6 @@ def test_laser():
     for ang in range(8):
         laser = Laser(
             screen=screen,
-            size=66,
             color=colors.YELLOW,
             angle=ang * np.pi / 4,
             physics_handler=physics_handler,
