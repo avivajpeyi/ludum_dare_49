@@ -7,6 +7,9 @@ import pygame
 
 from .colors import WHITE
 from .physics import GamePhysicsHandler, CollisionType
+from .score_manager import ScoreManager
+from .custom_events import SCORE_INCREASE, GAME_OVER
+
 
 
 class GameObject(ABC):
@@ -19,10 +22,12 @@ class GameObject(ABC):
             x: Optional[int] = None,
             y: Optional[int] = None,
             physics_handler: Optional[GamePhysicsHandler] = None,
+            score_handler: Optional[ScoreManager] = None,
     ):
         self.size = size
         self.screen = screen
         self.color = color
+        self.type = 0
 
         if x is None:
             self.x, self.y = self.screen_center
@@ -88,35 +93,12 @@ class GameObject(ABC):
         if self.physics_handler.DEBUG_MODE:
             pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
 
-    #def is_within_screen_bounds(self, buff=1):
-    #    """
-    #    Returns a boolean for whether the object is contained within the screen bounds.
-    #    buff is an optional scaling buffer for how far outside the screen bounds the object can be
-    #    """
-    #    slf_x, slf_y = self.x, self.y
-    #    ctr_x, ctr_y = self.screen_center
-    #    scr_x, scr_y = self.screen_size
-    #    half_width = scr_x/2
-    #    half_height= scr_y/2
-
-    #    # If the abs separation between the coordinate and center (in either direction) is greater than
-    #    # than half the screen size in that direction (times the buffer), then return False
-
-    #    print("is within bounds called")
-    #    print("dist_x: ", abs(slf_x - ctr_x)) 
-    #    print("dist_y: ", abs(slf_y - ctr_y)) 
-    #    if (abs(slf_x - ctr_x) > buff*half_width) | (abs(slf_y - ctr_y) > buff*half_height):
-    #        print("false")
-    #        return False
-    #    print('true')
-    #    return True
-
 
     def update(self) -> None:
         self.draw()
         if self.is_physics_object:
             self.rect.center = self.rigid_body.position
-            self.check_for_collision_with_enemy()
+            self.handle_collision_with_enemy()
 
     def destroy(self) -> None:
         """Remove from physics handler"""
@@ -139,11 +121,28 @@ class GameObject(ABC):
             self.size * 2, self.size * 2
         )
 
-    def check_for_collision_with_enemy(self):
+    def handle_collision_with_enemy(self):
         if self.rigid_body.collision_type == CollisionType.ENEMY.value:
-            return
+            return  # ignore enemy on enemy collisions
+
+        collided_with_enemy = False
+        collided_enemy = None
 
         for game_object in self.physics_handler.physics_game_objects:
-            if (game_object.rigid_body.collision_type == CollisionType.ENEMY.value):
+            if game_object.rigid_body.collision_type == CollisionType.ENEMY.value:
                 if self.rect.colliderect(game_object.rect):
-                    game_object.destroy()
+                    collided_with_enemy = True
+                    collided_enemy = game_object
+
+        if collided_with_enemy:
+            if self.rigid_body.collision_type == CollisionType.LASER.value:
+                if self.type == collided_enemy.type:
+
+                    collided_enemy.destroy()
+                    pygame.event.post(SCORE_INCREASE)
+
+
+            if self.rigid_body.collision_type == CollisionType.PLANET.value:
+                # if i am planet
+                collided_enemy.destroy()
+                pygame.event.post(GAME_OVER)

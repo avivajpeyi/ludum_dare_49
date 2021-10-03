@@ -10,7 +10,7 @@ from ludum_dare_49.physics import GamePhysicsHandler
 from ludum_dare_49.planet import Planet
 
 
-def test_enemy():
+def test_game_scene():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
     game = Game(screen)
@@ -18,4 +18,4 @@ def test_enemy():
     game.update()
 
 if __name__ == '__main__':
-    test_enemy()
+    test_game_scene()

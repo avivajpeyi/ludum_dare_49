@@ -45,7 +45,6 @@ def test_enemy():
                 pygame.image.save(screen, "planet.png")
 
         screen.fill(pygame.Color("black"))
-        planet.check_for_collision_with_enemy()
         for go in physics_handler.physics_game_objects:
             go.update()
         physics_handler.update()

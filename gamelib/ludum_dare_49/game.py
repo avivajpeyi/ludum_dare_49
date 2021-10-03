@@ -16,6 +16,7 @@ from .planet import Planet
 from .player import Player
 from .ui import TitleMenu
 from .score_manager import ScoreManager
+from .custom_events import SCORE_INCREASE, GAME_OVER
 
 PLAY_BACKGROUND_MUSIC = False
 
@@ -120,6 +121,11 @@ class Game:
             elif event.type == pygame.KEYDOWN:
                 self.on_keydown(event)
 
+            if event == GAME_OVER:
+                print("GAME OVER, BITCH")
+            if event == SCORE_INCREASE:
+                self.score_manger.increase_score()
+
     def update(self):
         while not self.game_over:
             self.process_events()
@@ -137,4 +143,8 @@ class Game:
             pygame.display.flip()
             self.clock.tick(const.FPS)
 
-            pygame.display.set_caption("fps: " + str(self.clock.get_fps()))
+            # currently for debugging
+            pygame.display.set_caption(
+                f"fps: {self.clock.get_fps():0.2f}, "
+                f"num obj: {len(self.physics_handler.physics_game_objects):02d}"
+            )
