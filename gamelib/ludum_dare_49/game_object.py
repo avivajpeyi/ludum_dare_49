@@ -99,7 +99,7 @@ class GameObject(ABC):
 
     def destroy(self) -> None:
         """Remove from physics handler"""
-        print(f"Destroy {self}")
+        # print(f"Destroy {self}")
         if self.is_physics_object:
             self.physics_handler.remove_object(self)
         del self
