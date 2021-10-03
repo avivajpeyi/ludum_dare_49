@@ -5,6 +5,7 @@ import pygame
 import pymunk
 
 from ludum_dare_49 import colors
+from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler
@@ -19,14 +20,24 @@ class Player(GameObject):
         color,
         x: Optional[int] = None,
         y: Optional[int] = None,
+        physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
     ):
         """
         Initialize the player, which is a rotating triangle.
         Set the initial color, shape, and orientation.
         """
-        super().__init__(size=size, screen=screen, color=color, x=x, y=y)
+        super().__init__(
+            size=size,
+            screen=screen,
+            color=color,
+            x=x,
+            y=y,
+            physics_handler=physics_handler,
+        )
+        self.screen = screen
+        self.physics_handler = physics_handler
         self.theta = 0
-        self.rotation_speed = 4
+        self.rotation_speed = 0.01
         self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
 
@@ -53,15 +64,15 @@ class Player(GameObject):
 
     def update(self, pressed_keys):
         """
-        Update the player state depending on which keys are pressed """
+        Update the player state depending on which keys are pressed"""
 
         # If left or right arrow pressed, apply rotation
         if pressed_keys[pygame.K_LEFT] | pressed_keys[pygame.K_RIGHT]:
             self.rotate(pressed_keys)
 
         # If spacebar pressed, fire laser
-        # if pressed_keys[pygame.K_SPACE]:
-        # self.fire_laser()
+        if pressed_keys[pygame.K_SPACE]:
+            self.fire_laser()
 
         self.draw()
 
@@ -78,10 +89,17 @@ class Player(GameObject):
         # Update current angle
         self.theta += dtheta
         self.relative_vertices = [
-            pygame.math.Vector2(p).rotate(dtheta)
+            pygame.math.Vector2(p).rotate_rad(dtheta)
             for p in self.relative_vertices
         ]
 
-    # def fire_laser(self):
-    #    radius = self.aspect_ratio * self.size
-    #    laser = Laser(self.center, radius, self.theta)
+    def fire_laser(self):
+        radius = self.aspect_ratio * self.size
+        laser = Laser(
+            screen=self.screen,
+            physics_handler=self.physics_handler,
+            angle=self.theta + np.pi / 2,
+            size=200,
+        )  # TODO: remove size later
+        print("angle: ", self.theta)
+        laser.draw()
