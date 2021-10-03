@@ -10,6 +10,7 @@ from ludum_dare_49.laser import Laser
 def test_laser():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    print(WIDTH, HEIGHT)
 
     clock = pygame.time.Clock()
 
@@ -24,10 +25,23 @@ def test_laser():
         screen=screen,
         size=200,
         color=colors.YELLOW,
-        x=10,
-        y=10,
+        x=540,
+        y=540,
         physics_handler=physics_handler,
     )
+    laser.draw()
+
+    """ Many new lasers """
+    #laser2 = Laser( screen=screen, size=200, color=colors.YELLOW, x=500, y=540, physics_handler=physics_handler)
+    #laser2.draw()
+    #laser3 = Laser( screen=screen, size=200, color=colors.YELLOW, x=540, y=600, physics_handler=physics_handler)
+    #laser3.draw()
+    #laser4 = Laser( screen=screen, size=200, color=colors.YELLOW, x=500, y=600, physics_handler=physics_handler)
+    #laser4.draw()
+    #laser5 = Laser( screen=screen, size=200, color=colors.YELLOW, x=400, y=400, physics_handler=physics_handler)
+    #laser5.draw()
+    #laser6 = Laser( screen=screen, size=200, color=colors.YELLOW, x=300, y=300, physics_handler=physics_handler)
+    #laser6.draw()
 
 
     while True:
@@ -45,11 +59,18 @@ def test_laser():
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
         laser.draw()
+        #laser2.draw()
+        #laser3.draw()
+        #laser4.draw()
+        #laser5.draw()
+        #laser6.draw()
         #player.update(pressed_keys)
-        # physics_handler.update()
+        pygame.draw.circle( screen, colors.WHITE, (540, 540), 10) # just to have a thing
+        physics_handler.update()
         #planet.draw()
         pygame.display.flip()
         clock.tick(FPS)
+
 
         pygame.display.set_caption("fps: " + str(clock.get_fps()))
 

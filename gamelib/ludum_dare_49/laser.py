@@ -23,11 +23,9 @@ class Laser(GameObject):
 
         # TODO: take in only the position (later, of the player) and create a vector from the center
         self.screen = screen
-        #self.aspect_ratio = 5
-        #self.width = 2
-        self.speed = 1.0
+        self.speed = 0.0000001
         self.body = pymunk.Body()
-        self.shape = pymunk.Segment(self.body, [0, -20], [0, 20], 10)
+        self.shape = pymunk.Segment(self.body, [0, 0], [0, 50], 20)
         super().__init__(size=size, screen=screen, color=color, x=x, y=y, physics_handler=physics_handler)
         self.draw()
         #self.fire()
@@ -40,21 +38,26 @@ class Laser(GameObject):
         rigid_body = self.body
         rigid_body.collision_type = CollisionType.LASER.value
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
-        velocity_direction = rigid_body.position - pymunk.Vec2d(*self.screen_center)
-        rigid_body.velocity = self.speed* velocity_direction.normalized()
+        print("laser pos: ", rigid_body.position)
+        velocity_direction = (rigid_body.position - pymunk.Vec2d(*self.screen_center)).normalized()
+        rigid_body.velocity = self.speed* velocity_direction
+        print("laser vel: ", self.body.velocity)
         # align its initial angle with its position.
-        rigid_body.angle = math.atan2(
-            rigid_body.position.y, rigid_body.position.x
-        )
+        # TODO: change to vector of difference from center of screen
+        #rigid_body.angle = math.atan2(
+        #    rigid_body.position.y, rigid_body.position.x
+        #)
+        rigid_body.angle = 0
+
 
         return rigid_body
 
     def _init_collider(self) -> pymunk.Circle:
         col = pymunk.Circle(self.rigid_body, self.radius)
         # TODO: Don't use a circle
-        col.mass = 10
-        col.friction = 0.7
-        col.damping = 0.9
+        col.mass = 0
+        col.friction = 0.9
+        col.damping = 0.0
         col.elasticity = 0
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("blue")  # colors the collider
@@ -62,9 +65,22 @@ class Laser(GameObject):
 
 
     def draw(self):
+        #print(self.body.velocity)
+        #print(self.color)
+        
         p1 = self.body.local_to_world(self.shape.a)
         p2 = self.body.local_to_world(self.shape.b)
-        pygame.draw.line(self.screen, self.color, p1, p2, 0)
+        #TODO: This is the source of the problem!
+        #p1 = self.shape.a
+        #p2 = self.shape.b
+        print("vel: ", self.body.velocity, " == pos: ", p1, p2)
+
+        # Figure out what I can replace the 10 with here!
+        pygame.draw.line(self.screen, self.color, p1, p2, 10)
+        pygame.draw.line(self.screen, self.color, self.shape.a, self.shape.b, 10)
+                
+
+    #def update(self):
 
 
 
