@@ -2,24 +2,24 @@ from typing import Optional
 
 import numpy as np
 import pygame
+
+from ludum_dare_49.constants import (COL_TYPE1, COL_TYPE2, REFIRE_DELAY,
+                                     ROTATION_SPEED)
 from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler
 
-ROTATION_SPEED = 0.1
-
 
 ### Create the triangle character here
 class Player(GameObject):
     def __init__(
-            self,
-            size: int,
-            screen: pygame.Surface,
-            color,
-            x: Optional[int] = None,
-            y: Optional[int] = None,
-            physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
+        self,
+        size: int,
+        screen: pygame.Surface,
+        x: Optional[int] = None,
+        y: Optional[int] = None,
+        physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
     ):
         """
         Initialize the player, which is a rotating triangle.
@@ -28,16 +28,17 @@ class Player(GameObject):
         super().__init__(
             size=size,
             screen=screen,
-            color=color,
+            color=COL_TYPE1,  # initial color
             x=x,
             y=y,
             physics_handler=physics_handler,
         )
         self.screen = screen
         self.physics_handler = physics_handler
-        self.refire_delay = 500 # ms
+        self.refire_delay = REFIRE_DELAY  # ms
         self.previous_fire_time = 0
         self.theta = 0
+        self.color_change_allowed = True
         self.rotation_speed = ROTATION_SPEED
         self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
@@ -75,9 +76,13 @@ class Player(GameObject):
         if pressed_keys[pygame.K_SPACE]:
             self.fire_laser()
 
-        # If enter pressed, switch mode
+        # If enter pressed, switch mode (only if enter is newly pressed)
         if pressed_keys[pygame.K_RETURN]:
-            self.switch_color()
+            if self.color_change_allowed:
+                self.switch_color()
+                self.color_change_allowed = False
+        else:  # enter key is unpressed, allow color change again
+            self.color_change_allowed = True
 
         self.draw()
 
@@ -100,6 +105,12 @@ class Player(GameObject):
 
     def switch_color(self):
         print("SWITCH COLOR")
+        if self.color == COL_TYPE1:
+            self.color = COL_TYPE2
+        elif self.color == COL_TYPE2:
+            self.color = COL_TYPE1
+        else:
+            raise Exception("Colors not specified correctly for player")
 
     def fire_laser(self):
         # Calculate if the delay is enough between the previous shot
@@ -112,9 +123,7 @@ class Player(GameObject):
             laser = Laser(
                 screen=self.screen,
                 physics_handler=self.physics_handler,
-                angle=self.theta+np.pi/2,
-                size=200,
+                color=self.color,
+                angle=self.theta + np.pi / 2,
             )  # TODO: remove size later
             laser.draw()
-
-

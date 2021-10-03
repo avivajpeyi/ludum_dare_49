@@ -3,6 +3,8 @@ import math
 import pygame
 import pymunk
 
+from ludum_dare_49 import colors
+
 from .game_object import GameObject
 from .physics import CollisionType, G, planet_gravity
 
@@ -45,7 +47,5 @@ class Enemy(GameObject):
     def update(self):
         super().update()
         # If enemy leaves the screen, delete it
-        if self.distance_to_center > 2*self.half_screen_diag:
+        if self.distance_to_center > self.half_screen_diag:
             self.destroy()
-            # Note: the 2 is a magic number - we allow the enemies to go up to 2* the diag before dying
-            # TODO: fix that later
