@@ -38,6 +38,7 @@ class Enemy(GameObject):
         col.friction = 0.7
         col.damping = 0.9
         col.elasticity = 1
+        col.filter = pymunk.ShapeFilter(categories= CollisionType.ENEMY.value)
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("white")  # colors the collider
         return col

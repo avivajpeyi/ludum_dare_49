@@ -73,7 +73,6 @@ class Laser(GameObject):
             [0, self.length / 2],
             self.width,
         )
-
         col.mass = 1
         col.friction = 0.0
         col.damping = 0.0
