@@ -1,11 +1,8 @@
-import math
-
 import pygame
 import pymunk
 
-from . import colors
 from .game_object import GameObject
-from .physics import DEBUG_PHYSICS, CollisionType
+from .physics import CollisionType
 
 
 class Planet(GameObject):
@@ -24,4 +21,3 @@ class Planet(GameObject):
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("red")  # colors the collider
         return col
-

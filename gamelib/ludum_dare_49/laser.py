@@ -6,6 +6,7 @@ import pymunk
 from ludum_dare_49 import colors
 from ludum_dare_49.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
 
+from .screen_handler import ScreenHandler
 from .game_object import GameObject
 from .physics import (
     CollisionType, GamePhysicsHandler
@@ -15,7 +16,7 @@ from .physics import (
 class Laser(GameObject):
     def __init__(
         self,
-        screen: pygame.Surface,
+        screen_handler: ScreenHandler,
         angle: float,
         color,
         physics_handler: Optional[GamePhysicsHandler] = None,
@@ -23,20 +24,20 @@ class Laser(GameObject):
         """
         Initialize the laser based on the current position of the player
         """
-        self.screen = screen
+        self.screen_handler = screen_handler
         self.angle = angle
 
         self.color = color
         self.speed = LASER_SPEED
         self.r = 50  # separation from center of the sceen # TODO
         self.dir_vector = self.get_direction_vector()
-        self.x = self.r * np.cos(self.angle) + self.screen_center[0]
-        self.y = self.r * np.sin(self.angle) + self.screen_center[1]
+        self.x = self.r * np.cos(self.angle) + self.screen_handler.screen_center[0]
+        self.y = self.r * np.sin(self.angle) + self.screen_handler.screen_center[1]
         self.length = LASER_LENGTH
         self.width = LASER_WIDTH
 
         super().__init__(
-            screen=screen,
+            screen_handler=self.screen_handler,
             color=color,
             x=self.x,
             y=self.y,
@@ -87,7 +88,7 @@ class Laser(GameObject):
 
     def draw(self):
         p1, p2 = self.get_collider_world_bounds()
-        self.rect = pygame.draw.line(self.screen, self.color, p1,p2, self.width)
+        self.rect = pygame.draw.line(self.screen_handler.screen, self.color, p1,p2, self.width)
 
     def update(self) -> None:
         self.draw()
@@ -99,5 +100,5 @@ class Laser(GameObject):
 
         super().update()
         # If laser leaves the screen, delete it
-        if self.distance_to_center > self.half_screen_diag:
+        if self.distance_to_center > self.screen_handler.half_screen_diag:
             self.destroy()
