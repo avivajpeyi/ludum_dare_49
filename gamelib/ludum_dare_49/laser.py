@@ -56,17 +56,19 @@ class Laser(GameObject):
         # TODO: clean this up
         rigid_body = pymunk.Body()
         rigid_body.collision_type = CollisionType.LASER.value
-        rigid_body.angle = self.angle + np.pi/2
-        rigid_body.velocity = [self.speed*np.cos(self.angle), 
-                               self.speed*np.sin(self.angle)]
+        rigid_body.angle = self.angle + np.pi / 2
+        rigid_body.velocity = [
+            self.speed * np.cos(self.angle),
+            self.speed * np.sin(self.angle),
+        ]
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
         print("laser pos: ", rigid_body.position)
-        #velocity_direction = (
+        # velocity_direction = (
         #    rigid_body.position - pymunk.Vec2d(*self.screen_center)
-        #).normalized()
-        #rigid_body.angle = math.atan2(
+        # ).normalized()
+        # rigid_body.angle = math.atan2(
         #    velocity_direction[0], -velocity_direction[1]
-        #)
+        # )
         # rigid_body.angle = 0
         # velocity_direction = pymunk.Vec2d([0, 0], [100, 100]).normalized() # fixed vel
         # rigid_body.velocity = 50, 50
@@ -118,7 +120,7 @@ class Laser(GameObject):
         # p1 = self.rigid_body.position
         # p2 = [p1[0], p1[1]+self.length]
 
-        #print("vel: ", self.rigid_body.velocity, " == pos: ", p1, p2)
+        # print("vel: ", self.rigid_body.velocity, " == pos: ", p1, p2)
 
         # Figure out what I can replace the 10 with here!
         pygame.draw.line(self.screen, self.color, p1, p2, self.width)
