@@ -15,7 +15,6 @@ class BaseMenu:
             HEIGHT * 0.4,
             theme=pygame_menu.themes.THEME_DARK,
         )
-        self.menu.add.button("Quit", pygame_menu.events.EXIT)
 
     @abstractmethod
     def add_buttons_to_menu(self, *args):
