@@ -76,7 +76,7 @@ class Game:
 
     def init_scene(self):
         self.planet = Planet(
-            size=40,
+            size=const.PLANET_SIZE,
             screen_handler=self.screen_handler,
             color=const.PLANET_COLOR,
             physics_handler=self.physics_handler,
@@ -130,6 +130,7 @@ class Game:
 
             if event == GAME_OVER:
                 self.game_over = True
+                self.cleanup()
 
             if event == SCORE_INCREASE:
                 self.score_manger.increase_score()
@@ -144,10 +145,12 @@ class Game:
         while not self.game_over:
             self.process_events()
             pressed_keys = pygame.key.get_pressed()
+
+            self.draw_background()
+
             self.player.update(pressed_keys)
             self.enemy_factory.update()
 
-            self.draw_background()
             for go in self.physics_handler.physics_game_objects:
                 go.update()
             self.physics_handler.update()
@@ -162,3 +165,7 @@ class Game:
                 f"fps: {self.clock.get_fps():0.2f}, "
                 f"num obj: {len(self.physics_handler.physics_game_objects):02d}"
             )
+
+    def cleanup(self):
+        for go in self.physics_handler.physics_game_objects:
+            go.destroy()
