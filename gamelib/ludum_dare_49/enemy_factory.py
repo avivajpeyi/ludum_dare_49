@@ -7,8 +7,8 @@ from .physics import GamePhysicsHandler
 
 
 class EnemyFactory(object):
-    def __init__(self, screen, physics_handler):
-        self.screen = screen
+    def __init__(self, screen_handler, physics_handler):
+        self.screen_handler = screen_handler
         self.physics_handler = physics_handler
         self.start_time = pygame.time.get_ticks()
         self.wave_number = 1
@@ -49,7 +49,7 @@ class EnemyFactory(object):
             x=r_draw*np.cos(theta)
             y=r_draw*np.sin(theta)
             size=const.ENEMY_SIZE,
-            screen=self.screen,
+            screen_handler=self.screen_handler,
             physics_handler=self.physics_handler,
             color=color,
         )

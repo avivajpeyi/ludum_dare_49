@@ -3,7 +3,7 @@ from ludum_dare_49 import colors
 from . import asset_loader
 
 FPS = 50
-SCALE = 1
+SCALE = 2
 REAL_WIDTH = 360
 REAL_HEIGHT = 360
 WIDTH = REAL_WIDTH * SCALE
