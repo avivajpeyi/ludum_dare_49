@@ -37,7 +37,7 @@ class Player(GameObject):
         self.screen = screen
         self.physics_handler = physics_handler
         self.theta = 0
-        self.rotation_speed = 4
+        self.rotation_speed = .01
         self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
 
@@ -89,7 +89,7 @@ class Player(GameObject):
         # Update current angle
         self.theta += dtheta
         self.relative_vertices = [
-            pygame.math.Vector2(p).rotate(dtheta)
+            pygame.math.Vector2(p).rotate_rad(dtheta)
             for p in self.relative_vertices
         ]
 
@@ -98,7 +98,8 @@ class Player(GameObject):
         laser = Laser(
             screen=self.screen,
             physics_handler=self.physics_handler,
-            angle=self.theta,
+            angle=self.theta+np.pi/2,
             size=200,
         )  # TODO: remove size later
+        print("angle: ", self.theta)
         laser.draw()
