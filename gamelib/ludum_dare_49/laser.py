@@ -4,6 +4,7 @@ import numpy as np
 import pygame
 import pymunk
 from ludum_dare_49 import colors
+from ludum_dare_49.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
 
 from .game_object import GameObject
 from .physics import (
@@ -13,33 +14,28 @@ from .physics import (
 
 class Laser(GameObject):
     def __init__(
-            self,
-            screen: pygame.Surface,
-            size: int,
-            angle: float,
-            color=colors.YELLOW,
-            physics_handler: Optional[
-                GamePhysicsHandler
-            ] = None,
+        self,
+        screen: pygame.Surface,
+        angle: float,
+        color,
+        physics_handler: Optional[GamePhysicsHandler] = None,
     ):
         """
         Initialize the laser based on the current position of the player
         """
-
-        # TODO: take in only the position (later, of the player)
-        #  and create a vector from the center
         self.screen = screen
         self.angle = angle
-        self.speed = 300
-        self.r = 50  # separation from center of the sceen
+
+        self.color = color
+        self.speed = LASER_SPEED
+        self.r = 50  # separation from center of the sceen # TODO
         self.dir_vector = self.get_direction_vector()
-        self.x = self.r * self.dir_vector[0] + self.screen_center[0]
-        self.y = self.r * self.dir_vector[1] + self.screen_center[1]
-        self.length = 50
-        self.width = 1
+        self.x = self.r * np.cos(self.angle) + self.screen_center[0]
+        self.y = self.r * np.sin(self.angle) + self.screen_center[1]
+        self.length = LASER_LENGTH
+        self.width = LASER_WIDTH
 
         super().__init__(
-            size=size,
             screen=screen,
             color=color,
             x=self.x,
@@ -51,17 +47,15 @@ class Laser(GameObject):
         return (np.cos(self.angle), np.sin(self.angle))
 
     def _init_rect(self) -> pygame.Rect:
-        rect = pygame.Rect(
-            self.x - self.width / 2, self.y - self.length / 2, self.width, self.length
+        return pygame.Rect(
+            self.x - self.width / 2,
+            self.y - self.length / 2,
+            self.width,
+            self.length,
         )
-        return rect
 
-    # TODO: Add in a destroyer if the object leaves the game screen
-
-    # TODO: fix the laser to be rectangular not quadrilateral on rotation
 
     def _init_rigid_body(self) -> pymunk.Body:
-        # TODO: clean this up
         rigid_body = pymunk.Body(pymunk.Body.KINEMATIC)
         rigid_body.collision_type = CollisionType.LASER.value
         rigid_body.angle = self.angle + np.pi / 2

@@ -41,3 +41,9 @@ class Enemy(GameObject):
         if self.physics_handler.DEBUG_MODE:
             col.color = pygame.Color("white")  # colors the collider
         return col
+
+    def update(self):
+        super().update()
+        # If enemy leaves the screen, delete it
+        if self.distance_to_center > self.half_screen_diag:
+            self.destroy()

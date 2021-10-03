@@ -73,7 +73,7 @@ class Game:
             color=colors.YELLOW,
             physics_handler=self.physics_handler,
         )
-        for i in range(30):
+        for i in range(15):
             Enemy(
                 x=random.randint(0, const.WIDTH),
                 y=random.randint(0, const.HEIGHT),
@@ -82,10 +82,18 @@ class Game:
                 physics_handler=self.physics_handler,
                 color=colors.RED,
             )
+        for i in range(15):
+            Enemy(
+                x=random.randint(0, const.WIDTH),
+                y=random.randint(0, const.HEIGHT),
+                size=10,
+                screen=self.screen,
+                physics_handler=self.physics_handler,
+                color=colors.BLUE,
+            )
         self.player = Player(
             size=int(self.planet.size * 0.75),
             screen=self.screen,
-            color=colors.GREEN,
             physics_handler=self.physics_handler,
         )
 

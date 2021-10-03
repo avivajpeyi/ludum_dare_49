@@ -10,7 +10,7 @@ from .constants import HEIGHT, WIDTH
 
 G = 5.0e6  # phoney gravitational constant
 
-DEBUG_PHYSICS = True
+DEBUG_PHYSICS = False
 
 
 class CollisionType(Enum):
