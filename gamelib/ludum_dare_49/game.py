@@ -51,13 +51,13 @@ class GameWindow:
         self.game_is_running = True
         self.game.update()
         self.restart = self.game.restart  # allow game to control execution
-
+        self.game_is_running = False
 
 class Game:
     def __init__(self, screen: pygame.Surface):
         self.screen = screen
         self.is_paused = False
-        self.restart = False
+        self.restart = True
         self.game_over = False
         self.clock = pygame.time.Clock()
         self.physics_handler = GamePhysicsHandler(self.screen, const.FPS)
@@ -97,7 +97,7 @@ class Game:
 
         elif event.key == pygame.K_f:  # the maximise button on the window
             if not self.fullscreen:
-                # Full screen needs pygame 2.0.0 for scaled. For some reason, I can't get it working ahh
+                # Full screen needs pygame 2.0.0 for scaled.
                 pygame.display.set_mode(
                     (const.WIDTH, const.HEIGHT),
                     pygame.FULLSCREEN | pygame.SCALED,
@@ -117,8 +117,8 @@ class Game:
                 self.on_keydown(event)
 
             if event == GAME_OVER:
-                # print("GAME OVER, BITCH")
-                pass
+                self.game_over = True
+
             if event == SCORE_INCREASE:
                 self.score_manger.increase_score()
 

@@ -1,1 +1,1 @@
-__NAME__ = "Game Name Placeholder"
+__NAME__ = "DOT BLASTER"
