@@ -93,3 +93,14 @@ class Laser(GameObject):
         p1, p2 = self.get_collider_world_bounds()
         pygame.draw.line(self.screen, self.color, p1, p2, self.width)
 
+    def update(self):
+        super().update()
+        # If laser leaves the screen, delete it
+        if self.distance_to_center > self.half_screen_diag:
+            self.destroy()
+
+
+
+
+
+
