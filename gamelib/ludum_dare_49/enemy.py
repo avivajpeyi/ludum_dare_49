@@ -17,10 +17,10 @@ class Enemy(GameObject):
 
         # Set the enemy's velocity to put it into a circular orbit from its
         # starting position. (dampening prevents circular orbit)
-        r = rigid_body.position.get_distance(self.screen_center)
+        r = rigid_body.position.get_distance(self.screen_handler.screen_center)
         v = math.sqrt(G / r) / r
         # v = v * 0.6
-        vec_to_center = rigid_body.position - pymunk.Vec2d(*self.screen_center)
+        vec_to_center = rigid_body.position - pymunk.Vec2d(*self.screen_handler.screen_center)
         rigid_body.velocity = vec_to_center.perpendicular() * v
 
         # Set the box's angular velocity to match its orbital period and
@@ -46,5 +46,5 @@ class Enemy(GameObject):
     def update(self):
         super().update()
         # If enemy leaves the screen, delete it
-        if self.distance_to_center > 2 * self.half_screen_diag:
+        if self.distance_to_center > 2 * self.screen_handler.half_screen_diag:
             self.destroy()

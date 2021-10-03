@@ -9,6 +9,7 @@ from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler
+from .screen_handler import ScreenHandler
 
 
 ### Create the triangle character here
@@ -16,7 +17,7 @@ class Player(GameObject):
     def __init__(
         self,
         size: int,
-        screen: pygame.Surface,
+        screen_handler: ScreenHandler,
         x: Optional[int] = None,
         y: Optional[int] = None,
         physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
@@ -27,13 +28,13 @@ class Player(GameObject):
         """
         super().__init__(
             size=size,
-            screen=screen,
+            screen_handler=screen_handler,
             color=COL_TYPE1,  # initial color
             x=x,
             y=y,
             physics_handler=physics_handler,
         )
-        self.screen = screen
+        self.screen_handler = screen_handler
         self.physics_handler = physics_handler
         self.refire_delay = REFIRE_DELAY  # ms
         self.previous_fire_time = 0
@@ -62,7 +63,7 @@ class Player(GameObject):
             [sum(coords) for coords in zip((self.x, self.y), vertex)]
             for vertex in self.relative_vertices
         ]
-        pygame.draw.polygon(self.screen, self.color, coordinates, 0)
+        pygame.draw.polygon(self.screen_handler.screen, self.color, coordinates, 0)
 
     def update(self, pressed_keys):
         """
@@ -90,6 +91,7 @@ class Player(GameObject):
         """
         Rotate the triangle a fixed amount
         """
+        dtheta = 0
         # Calculate change in theta
         if pressed_keys[pygame.K_RIGHT]:
             dtheta = self.rotation_speed
@@ -121,7 +123,7 @@ class Player(GameObject):
 
             radius = self.aspect_ratio * self.size
             laser = Laser(
-                screen=self.screen,
+                screen_handler=self.screen_handler,
                 physics_handler=self.physics_handler,
                 color=self.color,
                 angle=self.theta + np.pi / 2,

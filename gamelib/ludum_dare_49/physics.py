@@ -7,6 +7,7 @@ import pymunk
 import pymunk.pygame_util
 
 from .constants import HEIGHT, WIDTH
+from .screen_handler import ScreenHandler
 
 G = 5.0e6  # phoney gravitational constant
 
@@ -21,10 +22,10 @@ class CollisionType(Enum):
 
 class GamePhysicsHandler:
     def __init__(
-        self, screen: pygame.Surface, update_frequency: Optional[int] = 60
+        self, screen_handler: ScreenHandler, update_frequency: Optional[int] = 60
     ):
         self.space = pymunk.Space()
-        self.screen = screen
+        self.screen_handler = screen_handler
         self.update_frequency = update_frequency
         self.dt = 1.0 / self.update_frequency
         # self.space.damping = 0.9
@@ -32,7 +33,7 @@ class GamePhysicsHandler:
 
         self.DEBUG_MODE = DEBUG_PHYSICS
         if self.DEBUG_MODE:
-            self.draw_options = pymunk.pygame_util.DrawOptions(screen)
+            self.draw_options = pymunk.pygame_util.DrawOptions(self.screen_handler.screen)
 
     def update(self):
         """Update the space for the given time step."""

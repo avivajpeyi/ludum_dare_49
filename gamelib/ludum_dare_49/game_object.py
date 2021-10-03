@@ -8,25 +8,25 @@ import pygame
 from .colors import WHITE
 from .custom_events import GAME_OVER, SCORE_INCREASE
 from .physics import CollisionType, GamePhysicsHandler
-from .score_manager import ScoreManager
+
+from .screen_handler import ScreenHandler
 
 
 class GameObject(ABC):
     def __init__(
         self,
-        screen: pygame.Surface,
+        screen_handler: ScreenHandler,
         color=WHITE,
         size: Optional[int] = None,
         x: Optional[int] = None,
         y: Optional[int] = None,
         physics_handler: Optional[GamePhysicsHandler] = None,
-        score_handler: Optional[ScoreManager] = None,
     ):
         self.size = size
-        self.screen = screen
+        self.screen_handler = screen_handler
         self.color = color
         if x is None:
-            self.x, self.y = self.screen_center
+            self.x, self.y = screen_handler.screen_center
         else:
             self.x, self.y = x, y
 
@@ -52,25 +52,13 @@ class GameObject(ABC):
         )
         return is_obj
 
-    @property
-    def screen_size(self) -> Tuple[float, float]:
-        return self.screen.get_size()
-
-    @property
-    def screen_center(self) -> Tuple[float, float]:
-        screen_size = self.screen_size
-        return screen_size[0] / 2, screen_size[1] / 2
-
-    @property
-    def half_screen_diag(self) -> float:
-        return np.sqrt(sum([x * x / 4 for x in self.screen_size]))
 
     @property
     def distance_to_center(self):
         if self.is_physics_object:
-            return self.rigid_body.position.get_distance(self.screen_center)
+            return self.rigid_body.position.get_distance(self.screen_handler.screen_center)
         else:
-            ctr_x, ctr_y = self.screen_center
+            ctr_x, ctr_y = self.screen_handler.screen_center
             x = ctr_x - self.x
             y = ctr_y - self.y
             return math.sqrt(x ** 2 + y ** 2)
@@ -83,11 +71,11 @@ class GameObject(ABC):
             x, y = self.x, self.y
 
         pygame.draw.circle(
-            self.screen, self.color, (int(x), int(y)), self.size
+            self.screen_handler.screen, self.color, (int(x), int(y)), self.size
         )
 
         if self.physics_handler.DEBUG_MODE:
-            pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
+            pygame.draw.rect(self.screen_handler.screen, pygame.Color("green"), self.rect)
 
     def update(self) -> None:
         if self.is_physics_object:
