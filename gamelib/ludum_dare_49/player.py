@@ -20,13 +20,20 @@ class Player(GameObject):
         color,
         x: Optional[int] = None,
         y: Optional[int] = None,
-        physics_handler: Optional[GamePhysicsHandler] = None, # Not optional!
+        physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
     ):
         """
         Initialize the player, which is a rotating triangle.
         Set the initial color, shape, and orientation.
         """
-        super().__init__(size=size, screen=screen, color=color, x=x, y=y, physics_handler=physics_handler)
+        super().__init__(
+            size=size,
+            screen=screen,
+            color=color,
+            x=x,
+            y=y,
+            physics_handler=physics_handler,
+        )
         self.screen = screen
         self.physics_handler = physics_handler
         self.theta = 0
@@ -57,7 +64,7 @@ class Player(GameObject):
 
     def update(self, pressed_keys):
         """
-        Update the player state depending on which keys are pressed """
+        Update the player state depending on which keys are pressed"""
 
         # If left or right arrow pressed, apply rotation
         if pressed_keys[pygame.K_LEFT] | pressed_keys[pygame.K_RIGHT]:
@@ -87,11 +94,11 @@ class Player(GameObject):
         ]
 
     def fire_laser(self):
-       radius = self.aspect_ratio * self.size
-       laser = Laser(screen=self.screen, physics_handler=self.physics_handler, angle=self.theta, size=200) # TODO: remove size later
-       laser.draw()
-
-
-
-
-
+        radius = self.aspect_ratio * self.size
+        laser = Laser(
+            screen=self.screen,
+            physics_handler=self.physics_handler,
+            angle=self.theta,
+            size=200,
+        )  # TODO: remove size later
+        laser.draw()

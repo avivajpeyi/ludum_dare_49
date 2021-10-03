@@ -21,7 +21,7 @@ def test_player():
         physics_handler=physics_handler,
     )
     player = Player(
-        size=WIDTH/40.0,
+        size=WIDTH / 40.0,
         screen=screen,
         color=colors.GREEN,
         physics_handler=physics_handler,

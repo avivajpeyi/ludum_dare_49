@@ -1,11 +1,11 @@
-import pygame
 import numpy as np
+import pygame
 
 from ludum_dare_49 import colors
 from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
+from ludum_dare_49.laser import Laser
 from ludum_dare_49.physics import GamePhysicsHandler
 from ludum_dare_49.planet import Planet
-from ludum_dare_49.laser import Laser
 
 
 def test_laser():
@@ -23,9 +23,14 @@ def test_laser():
         physics_handler=physics_handler,
     )
     for ang in range(8):
-        laser = Laser( screen=screen, size=66, color=colors.YELLOW, angle=ang*np.pi/4, physics_handler=physics_handler,)
+        laser = Laser(
+            screen=screen,
+            size=66,
+            color=colors.YELLOW,
+            angle=ang * np.pi / 4,
+            physics_handler=physics_handler,
+        )
         laser.draw()
-
 
     while True:
         for event in pygame.event.get():
@@ -47,7 +52,6 @@ def test_laser():
         planet.draw()
         pygame.display.flip()
         clock.tick(FPS)
-
 
         pygame.display.set_caption("fps: " + str(clock.get_fps()))
 
