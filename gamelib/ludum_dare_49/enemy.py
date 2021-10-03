@@ -29,7 +29,6 @@ class Enemy(GameObject):
         rigid_body.angle = math.atan2(
             rigid_body.position.y, rigid_body.position.x
         )
-
         return rigid_body
 
     def _init_collider(self) -> pymunk.Circle:
@@ -45,6 +44,6 @@ class Enemy(GameObject):
 
     def update(self):
         super().update()
-        # If enemy leaves the screen, delete it
-        if self.distance_to_center > 2 * self.half_screen_diag:
+        # If enemy leaves (twice the distance to) the screen, delete it
+        if self.screen.distance_to_center > 2 * self.screen.half_screen_diag:
             self.destroy()
