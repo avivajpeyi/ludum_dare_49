@@ -3,8 +3,12 @@ from typing import Optional
 import numpy as np
 import pygame
 
-from ludum_dare_49.constants import (COL_TYPE1, COL_TYPE2, REFIRE_DELAY,
-                                     ROTATION_SPEED)
+from ludum_dare_49.constants import (
+    COL_TYPE1,
+    COL_TYPE2,
+    REFIRE_DELAY,
+    ROTATION_SPEED,
+)
 from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
@@ -39,7 +43,7 @@ class Player(GameObject):
         self.refire_delay = REFIRE_DELAY  # ms
         self.previous_fire_time = 0
         self.theta = 0
-        self.color_change_allowed = True
+        self.color_change_allowed = False
         self.rotation_speed = ROTATION_SPEED
         self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
@@ -63,7 +67,9 @@ class Player(GameObject):
             [sum(coords) for coords in zip((self.x, self.y), vertex)]
             for vertex in self.relative_vertices
         ]
-        pygame.draw.polygon(self.screen_handler.screen, self.color, coordinates, 0)
+        pygame.draw.polygon(
+            self.screen_handler.screen, self.color, coordinates, 0
+        )
 
     def update(self, pressed_keys):
         """
