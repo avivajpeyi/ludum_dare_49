@@ -22,3 +22,7 @@ class ScreenHandler:
     @property
     def half_screen_diag(self) -> float:
         return np.sqrt(sum([x * x / 4 for x in self.screen_size]))
+
+    @property
+    def screen_diag(self) -> float:
+        return np.sqrt(2) * self.screen_size[0]
