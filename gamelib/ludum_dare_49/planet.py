@@ -13,6 +13,7 @@ class Planet(GameObject):
         rigid_body = pymunk.Body(body_type=pymunk.Body.STATIC)
         rigid_body.collision_type = CollisionType.PLANET.value
         rigid_body.position = pymunk.Vec2d(self.x, self.y)
+        print("planet pos: ", rigid_body.position)
         return rigid_body
 
     def _init_collider(self) -> pymunk.Circle:
