@@ -1,4 +1,5 @@
 import math
+import numpy as np
 from abc import ABC
 from typing import Optional, Tuple
 
@@ -63,6 +64,10 @@ class GameObject(ABC):
         return screen_size[0] / 2, screen_size[1] / 2
 
     @property
+    def half_screen_diag(self) -> float:
+        return np.sqrt(sum([x*x/4 for x in self.screen_size]))
+
+    @property
     def distance_to_center(self):
         if self.is_physics_object:
             return self.rigid_body.position.get_distance(self.screen_center)
@@ -85,6 +90,30 @@ class GameObject(ABC):
 
         if self.physics_handler.DEBUG_MODE:
             pygame.draw.rect(self.screen, pygame.Color("green"), self.rect)
+
+    #def is_within_screen_bounds(self, buff=1):
+    #    """
+    #    Returns a boolean for whether the object is contained within the screen bounds.
+    #    buff is an optional scaling buffer for how far outside the screen bounds the object can be
+    #    """
+    #    slf_x, slf_y = self.x, self.y
+    #    ctr_x, ctr_y = self.screen_center
+    #    scr_x, scr_y = self.screen_size
+    #    half_width = scr_x/2
+    #    half_height= scr_y/2
+
+    #    # If the abs separation between the coordinate and center (in either direction) is greater than
+    #    # than half the screen size in that direction (times the buffer), then return False
+
+    #    print("is within bounds called")
+    #    print("dist_x: ", abs(slf_x - ctr_x)) 
+    #    print("dist_y: ", abs(slf_y - ctr_y)) 
+    #    if (abs(slf_x - ctr_x) > buff*half_width) | (abs(slf_y - ctr_y) > buff*half_height):
+    #        print("false")
+    #        return False
+    #    print('true')
+    #    return True
+
 
     def update(self) -> None:
         self.draw()

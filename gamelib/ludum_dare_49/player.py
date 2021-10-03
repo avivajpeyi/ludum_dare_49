@@ -35,6 +35,8 @@ class Player(GameObject):
         )
         self.screen = screen
         self.physics_handler = physics_handler
+        self.refire_delay = 500 # ms
+        self.previous_fire_time = 0
         self.theta = 0
         self.rotation_speed = ROTATION_SPEED
         self.aspect_ratio = 2  # height / width of isosceles triangle
@@ -100,12 +102,19 @@ class Player(GameObject):
         print("SWITCH COLOR")
 
     def fire_laser(self):
-        radius = self.aspect_ratio * self.size
-        laser = Laser(
-            screen=self.screen,
-            physics_handler=self.physics_handler,
-            angle=self.theta + np.pi / 2,
-            size=200,
-        )  # TODO: remove size later
+        # Calculate if the delay is enough between the previous shot
+        current_fire_time = pygame.time.get_ticks()
+        if (current_fire_time - self.previous_fire_time) > self.refire_delay:
+            # If firing, reset the previous fire time
+            self.previous_fire_time = current_fire_time
 
-        laser.draw()
+            radius = self.aspect_ratio * self.size
+            laser = Laser(
+                screen=self.screen,
+                physics_handler=self.physics_handler,
+                angle=self.theta+np.pi/2,
+                size=200,
+            )  # TODO: remove size later
+            laser.draw()
+
+
