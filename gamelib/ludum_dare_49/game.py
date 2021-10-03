@@ -85,6 +85,7 @@ class Game:
             size=int(self.planet.size * 0.75),
             screen=self.screen,
             color=colors.GREEN,
+            physics_handler=self.physics_handler,
         )
 
     def on_keydown(self, event):
@@ -128,7 +129,6 @@ class Game:
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
 
-            self.planet.check_for_collision_with_enemy()
             for go in self.physics_handler.physics_game_objects:
                 go.update()
             self.physics_handler.update()

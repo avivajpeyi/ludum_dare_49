@@ -2,25 +2,24 @@ from typing import Optional
 
 import numpy as np
 import pygame
-import pymunk
-
-from ludum_dare_49 import colors
 from ludum_dare_49.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler
 
+ROTATION_SPEED = 0.1
+
 
 ### Create the triangle character here
 class Player(GameObject):
     def __init__(
-        self,
-        size: int,
-        screen: pygame.Surface,
-        color,
-        x: Optional[int] = None,
-        y: Optional[int] = None,
-        physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
+            self,
+            size: int,
+            screen: pygame.Surface,
+            color,
+            x: Optional[int] = None,
+            y: Optional[int] = None,
+            physics_handler: Optional[GamePhysicsHandler] = None,  # Not optional!
     ):
         """
         Initialize the player, which is a rotating triangle.
@@ -37,7 +36,7 @@ class Player(GameObject):
         self.screen = screen
         self.physics_handler = physics_handler
         self.theta = 0
-        self.rotation_speed = 0.01
+        self.rotation_speed = ROTATION_SPEED
         self.aspect_ratio = 2  # height / width of isosceles triangle
         self.relative_vertices = self.get_relative_vertices()
 
@@ -74,6 +73,10 @@ class Player(GameObject):
         if pressed_keys[pygame.K_SPACE]:
             self.fire_laser()
 
+        # If enter pressed, switch mode
+        if pressed_keys[pygame.K_RETURN]:
+            self.switch_color()
+
         self.draw()
 
     def rotate(self, pressed_keys):
@@ -93,6 +96,9 @@ class Player(GameObject):
             for p in self.relative_vertices
         ]
 
+    def switch_color(self):
+        print("SWITCH COLOR")
+
     def fire_laser(self):
         radius = self.aspect_ratio * self.size
         laser = Laser(
@@ -101,5 +107,5 @@ class Player(GameObject):
             angle=self.theta + np.pi / 2,
             size=200,
         )  # TODO: remove size later
-        print("angle: ", self.theta)
+
         laser.draw()
