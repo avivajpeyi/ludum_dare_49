@@ -137,4 +137,8 @@ class Game:
             pygame.display.flip()
             self.clock.tick(const.FPS)
 
-            pygame.display.set_caption("fps: " + str(self.clock.get_fps()))
+            # currently for debugging
+            pygame.display.set_caption(
+                f"fps: {self.clock.get_fps():0.2f}, "
+                f"num obj: {len(self.physics_handler.physics_game_objects):02d}"
+            )

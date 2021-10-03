@@ -8,6 +8,8 @@ from .colors import WHITE
 from .physics import GamePhysicsHandler, CollisionType
 
 
+
+
 class GameObject(ABC):
     def __init__(
             self,
@@ -22,6 +24,7 @@ class GameObject(ABC):
         self.size = size
         self.screen = screen
         self.color = color
+        self.type = 0
 
         if x is None:
             self.x, self.y = self.screen_center
@@ -112,7 +115,7 @@ class GameObject(ABC):
 
     def handle_collision_with_enemy(self):
         if self.rigid_body.collision_type == CollisionType.ENEMY.value:
-            return  # ignore enemy collisions
+            return  # ignore enemy on enemy collisions
 
         collided_with_enemy = False
         collided_enemy = None
@@ -125,9 +128,11 @@ class GameObject(ABC):
 
         if collided_with_enemy:
             if self.rigid_body.collision_type == CollisionType.LASER.value:
-                # if i am a laser
-                print("Score +1")
-                collided_enemy.destroy()
+                if self.type == collided_enemy.type:
+                    print("Score +1")
+                    collided_enemy.destroy()
+
+
             if self.rigid_body.collision_type == CollisionType.PLANET.value:
                 # if i am planet
                 print("GAME OVER, BITCH")
