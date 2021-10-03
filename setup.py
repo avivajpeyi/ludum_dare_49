@@ -33,6 +33,11 @@ INSTALL_REQUIRES = [
     "package_version",
     "interrogate",
     "pygame-menu",
+    # clap
+    "pyaudio",
+    "pi-clap",
+    # air gesture
+    "opencv-python"
 ]
 
 
