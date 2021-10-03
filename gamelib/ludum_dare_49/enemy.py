@@ -46,5 +46,5 @@ class Enemy(GameObject):
     def update(self):
         super().update()
         # If enemy leaves the screen, delete it
-        if self.distance_to_center > self.half_screen_diag:
+        if self.distance_to_center > 2 * self.half_screen_diag:
             self.destroy()

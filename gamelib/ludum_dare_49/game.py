@@ -10,13 +10,14 @@ import pygame
 
 from . import __NAME__, asset_loader, colors
 from . import constants as const
-from .enemy import Enemy
+from .custom_events import GAME_OVER, SCORE_INCREASE
+# from .enemy import Enemy
+from .enemy_factory import EnemyFactory
 from .physics import GamePhysicsHandler
 from .planet import Planet
 from .player import Player
-from .ui import TitleMenu
 from .score_manager import ScoreManager
-from .custom_events import SCORE_INCREASE, GAME_OVER
+from .ui import TitleMenu
 
 PLAY_BACKGROUND_MUSIC = False
 
@@ -73,24 +74,10 @@ class Game:
             color=colors.YELLOW,
             physics_handler=self.physics_handler,
         )
-        for i in range(15):
-            Enemy(
-                x=random.randint(0, const.WIDTH),
-                y=random.randint(0, const.HEIGHT),
-                size=10,
-                screen=self.screen,
-                physics_handler=self.physics_handler,
-                color=colors.RED,
-            )
-        for i in range(15):
-            Enemy(
-                x=random.randint(0, const.WIDTH),
-                y=random.randint(0, const.HEIGHT),
-                size=10,
-                screen=self.screen,
-                physics_handler=self.physics_handler,
-                color=colors.BLUE,
-            )
+        self.enemy_factory = EnemyFactory(
+            screen=self.screen,
+            physics_handler=self.physics_handler,
+        )
         self.player = Player(
             size=int(self.planet.size * 0.75),
             screen=self.screen,
@@ -130,7 +117,8 @@ class Game:
                 self.on_keydown(event)
 
             if event == GAME_OVER:
-                print("GAME OVER, BITCH")
+                # print("GAME OVER, BITCH")
+                pass
             if event == SCORE_INCREASE:
                 self.score_manger.increase_score()
 
@@ -142,6 +130,7 @@ class Game:
 
             pressed_keys = pygame.key.get_pressed()
             self.player.update(pressed_keys)
+            self.enemy_factory.update()
 
             for go in self.physics_handler.physics_game_objects:
                 go.update()
