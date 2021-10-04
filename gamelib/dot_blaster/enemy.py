@@ -4,7 +4,7 @@ import numpy as np
 import pygame
 import pymunk
 
-from ludum_dare_49.constants import COL_TYPE1
+from dot_blaster.constants import COL_TYPE1
 
 from .game_object import GameObject
 from .physics import CollisionType, G, planet_gravity

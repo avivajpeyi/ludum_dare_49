@@ -3,8 +3,8 @@ from typing import Optional
 import numpy as np
 import pygame
 import pymunk
-from ludum_dare_49 import colors
-from ludum_dare_49.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
+from dot_blaster import colors
+from dot_blaster.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
 
 from .screen_handler import ScreenHandler
 from .game_object import GameObject

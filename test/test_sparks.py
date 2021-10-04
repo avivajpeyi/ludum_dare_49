@@ -2,7 +2,7 @@ import math
 import random
 
 import pygame
-from ludum_dare_49.sparks import Spark, Sparks
+from dot_blaster.sparks import Spark, Sparks
 import sys
 
 

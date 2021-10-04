@@ -8,7 +8,8 @@ from setuptools import find_packages, setup
 
 # PROJECT SPECIFIC
 
-PROJ_NAME = "ludum_dare_49"
+PROJ_NAME = "dot_blaster"
+
 
 SRC_CODE_DIR = "gamelib"
 PACKAGES = find_packages(SRC_CODE_DIR)
@@ -23,17 +24,15 @@ CLASSIFIERS = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-INSTALL_REQUIRES = [
-    "pygame>2.0.0",
+INSTALL_REQUIRES = ["pygame>2.0.0", "package_version", "pygame-menu", "numpy"]
+EXTRA_REQUIRES = [
+    "pyinstaller",
+    "interrogate",
     "pytest>=3.6",
     "pre-commit",
     "flake8",
     "black",
     "isort",
-    "package_version",
-    "interrogate",
-    "pygame-menu",
-    "pyinstaller",
 ]
 
 
@@ -57,7 +56,7 @@ setup(
     description="Ludum Dare 49 game",
     author="Avi + Reinhold",
     author_email="avi.vajpeyi@gmail.com",
-    url="https://github.com/avivajpeyi/ludum_dare_49",
+    url="https://github.com/avivajpeyi/dot_blaster",
     packages=PACKAGES,
     package_data={PROJ_NAME: ["assets/*"]},
     # When your source code is in a subdirectory under the project root, e.g.
@@ -69,7 +68,7 @@ setup(
     zip_safe=True,
     entry_points={
         "console_scripts": [
-            f"run_ld49_game={PROJ_NAME}.main:main",
+            f"play_dot_blaster={PROJ_NAME}.main:main",
         ]
     },
 )

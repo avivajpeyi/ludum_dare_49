@@ -1,2 +1,3 @@
-from ludum_dare_49 import main
+from dot_blaster import main
+
 main.main()

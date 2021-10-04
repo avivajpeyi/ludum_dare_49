@@ -3,13 +3,13 @@ from typing import Optional
 import numpy as np
 import pygame
 
-from ludum_dare_49.constants import (
+from dot_blaster.constants import (
     COL_TYPE1,
     COL_TYPE2,
     REFIRE_DELAY,
     ROTATION_SPEED,
 )
-from ludum_dare_49.laser import Laser
+from dot_blaster.laser import Laser
 
 from .game_object import GameObject
 from .physics import GamePhysicsHandler

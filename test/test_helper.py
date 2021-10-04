@@ -1,6 +1,6 @@
 import pygame
 
-from ludum_dare_49 import colors
+from dot_blaster import colors
 
 
 def make_test_screen(test_name):

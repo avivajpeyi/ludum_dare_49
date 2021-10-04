@@ -2,10 +2,9 @@ import random
 
 import pygame
 
-from ludum_dare_49 import colors
-from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
-from ludum_dare_49.score_manager import ScoreManager
-
+from dot_blaster import colors
+from dot_blaster.constants import FPS, HEIGHT, WIDTH
+from dot_blaster.score_manager import ScoreManager
 
 
 def test_enemy():
@@ -19,9 +18,9 @@ def test_enemy():
     while True:
         for event in pygame.event.get():
             if (
-                    event.type == pygame.QUIT
-                    or event.type == pygame.KEYDOWN
-                    and event.key == pygame.K_ESCAPE
+                event.type == pygame.QUIT
+                or event.type == pygame.KEYDOWN
+                and event.key == pygame.K_ESCAPE
             ):
                 exit()
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:

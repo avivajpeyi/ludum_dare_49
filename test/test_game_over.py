@@ -1,10 +1,10 @@
 import pygame
 
-from ludum_dare_49.score_manager import ScoreManager
-from ludum_dare_49.screen_handler import ScreenHandler
-from ludum_dare_49.ui.game_over_screen import GameOverScreen
+from dot_blaster.score_manager import ScoreManager
+from dot_blaster.screen_handler import ScreenHandler
+from dot_blaster.ui.game_over_screen import GameOverScreen
 
-from ludum_dare_49 import constants as const
+from dot_blaster import constants as const
 
 
 def test_2():

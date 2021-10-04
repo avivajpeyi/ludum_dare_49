@@ -8,7 +8,7 @@ __pycache__/
 *.so
 
 highscore.txt
-/gamelib/ludum_dare_49/assets/data/highscore.txt
+/gamelib/dot_blaster/assets/data/highscore.txt
 
 # Distribution / packaging
 .Python
