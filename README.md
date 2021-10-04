@@ -7,6 +7,11 @@ Shoot the dots with the appropriate blaster before they get too close!
 
 ![gameplay gif]
 
+## To Play:
+```
+pip install dot-blaster
+play_dot_blaster
+```
 
 
 [gameplay gif]: socials/gameplay.gif
