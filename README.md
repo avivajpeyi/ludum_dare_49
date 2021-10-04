@@ -3,7 +3,7 @@
 # Dot Blaster
 #### Game for [Ludum Dare 49]
 
-![gameplay gif]]
+![gameplay gif]
 
 
 
