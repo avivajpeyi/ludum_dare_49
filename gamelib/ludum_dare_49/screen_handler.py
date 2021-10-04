@@ -3,26 +3,39 @@ from typing import Tuple
 import numpy as np
 import pygame
 
+from . import __NAME__
 from . import constants as const
 
 
 class ScreenHandler:
     def __init__(self):
         self.screen = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
+        pygame.display.set_caption(__NAME__)
+        print("Screen created")
+        self.rect = self.screen.get_rect()
 
     @property
-    def screen_size(self) -> Tuple[float, float]:
+    def size(self) -> Tuple[int, int]:
         return self.screen.get_size()
 
     @property
-    def screen_center(self) -> Tuple[float, float]:
-        screen_size = self.screen_size
-        return screen_size[0] / 2, screen_size[1] / 2
+    def center(self) -> Tuple[int, int]:
+        return self.size[0] / 2, self.size[1] / 2
 
     @property
-    def half_screen_diag(self) -> float:
-        return np.sqrt(sum([x * x / 4 for x in self.screen_size]))
+    def half_diag(self) -> float:
+        return np.sqrt(sum([x * x / 4 for x in self.size]))
 
     @property
-    def screen_diag(self) -> float:
-        return np.sqrt(2) * self.screen_size[0]
+    def diag(self) -> float:
+        return np.sqrt(2) * self.size[0]
+
+    def top(self, fraction_from_top=0) -> Tuple[int, int]:
+        """fraction needs to be in [0,1]"""
+        w, h = self.size
+        return w / 2, int(h * fraction_from_top)
+
+    def bot(self, fraction_from_bot=0) -> Tuple[int, int]:
+        """fraction needs to be in [0,1]"""
+        w, h = self.size
+        return w / 2, int(h - h * fraction_from_bot)

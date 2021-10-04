@@ -51,13 +51,13 @@ class EnemyFactory(object):
 
     def create_new_enemy(self, color):
         if const.MAX_NUM_ENEMIES_IN_GAME > Enemy.STATIC_NUM_ENEMIES:
-            screen_radius = self.screen_handler.screen_diag / 2.0
+            screen_radius = self.screen_handler.diag / 2.0
             r_draw = np.random.uniform(
                 0.8 * screen_radius, screen_radius
             )  # sample between r and 2r
             theta = 2 * np.pi * np.random.rand()
 
-            (ctr_x, ctr_y) = self.screen_handler.screen_center
+            (ctr_x, ctr_y) = self.screen_handler.center
 
             Enemy(
                 x=r_draw * np.cos(theta) + ctr_x,

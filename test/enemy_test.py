@@ -46,8 +46,8 @@ def test_enemy():
 
         screen.fill(pygame.Color("black"))
         for go in physics_handler.physics_game_objects:
-            go.update()
-        physics_handler.update()
+            go.run_game()
+        physics_handler.run_game()
 
         pygame.display.flip()
         clock.tick(FPS)

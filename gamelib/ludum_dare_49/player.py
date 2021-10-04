@@ -71,7 +71,7 @@ class Player(GameObject):
             self.screen_handler.screen, self.color, coordinates, 0
         )
 
-    def update(self, pressed_keys):
+    def process_input(self, pressed_keys):
         """
         Update the player state depending on which keys are pressed"""
 
@@ -90,8 +90,6 @@ class Player(GameObject):
                 self.color_change_allowed = False
         else:  # enter key is unpressed, allow color change again
             self.color_change_allowed = True
-
-        self.draw()
 
     def rotate(self, pressed_keys):
         """

@@ -26,7 +26,7 @@ class GameObject(ABC):
         self.screen_handler = screen_handler
         self.color = color
         if x is None:
-            self.x, self.y = screen_handler.screen_center
+            self.x, self.y = screen_handler.center
         else:
             self.x, self.y = x, y
 
@@ -52,13 +52,14 @@ class GameObject(ABC):
         )
         return is_obj
 
-
     @property
     def distance_to_center(self):
         if self.is_physics_object:
-            return self.rigid_body.position.get_distance(self.screen_handler.screen_center)
+            return self.rigid_body.position.get_distance(
+                self.screen_handler.center
+            )
         else:
-            ctr_x, ctr_y = self.screen_handler.screen_center
+            ctr_x, ctr_y = self.screen_handler.center
             x = ctr_x - self.x
             y = ctr_y - self.y
             return math.sqrt(x ** 2 + y ** 2)
@@ -75,7 +76,9 @@ class GameObject(ABC):
         )
 
         if self.physics_handler.DEBUG_MODE:
-            pygame.draw.rect(self.screen_handler.screen, pygame.Color("green"), self.rect)
+            pygame.draw.rect(
+                self.screen_handler.screen, pygame.Color("green"), self.rect
+            )
 
     def update(self) -> None:
         if self.is_physics_object:
