@@ -33,6 +33,7 @@ INSTALL_REQUIRES = [
     "package_version",
     "interrogate",
     "pygame-menu",
+    "pyinstaller",
 ]
 
 

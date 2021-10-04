@@ -30,4 +30,6 @@ class ScoreManager:
     def save_highscore(self):
         with load(HIGHSCORE_FILE, "w") as f:
             f.write(str(self.highscore))
+
+    def reset_score(self):
         self._points = 0

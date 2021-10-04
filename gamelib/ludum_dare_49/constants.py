@@ -43,6 +43,6 @@ PTXT_KWARGS = dict(fontname=FONT_MAIN, color=FONT_COLOR)
 
 BACKGROUND_IMAGE_PATH = asset_loader.filepath("sprites/faded_circle.png")
 BACKGROUND_IMAGE = asset_loader.load_image("sprites/faded_circle.png")
-
+ICON = asset_loader.load_image("sprites/icon.png")
 
 HIGHSCORE_FILE = "data/highscore.txt"

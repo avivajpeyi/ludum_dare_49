@@ -189,6 +189,7 @@ class Game:
                 )
 
         if self.restart:
+            self.score_manger.reset_score()
             self.physics_handler.destroy()
             self.init_scene()
             self.restart = False

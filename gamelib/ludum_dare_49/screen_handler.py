@@ -11,6 +11,7 @@ class ScreenHandler:
     def __init__(self):
         self.screen = pygame.display.set_mode((const.WIDTH, const.HEIGHT))
         pygame.display.set_caption(__NAME__)
+        pygame.display.set_icon(const.ICON)
         print("Screen created")
         self.rect = self.screen.get_rect()
 
