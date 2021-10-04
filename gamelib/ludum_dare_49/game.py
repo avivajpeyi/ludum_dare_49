@@ -191,6 +191,7 @@ class Game:
         if self.restart:
             self.score_manger.reset_score()
             self.physics_handler.destroy()
+            Enemy.STATIC_NUM_ENEMIES = 0
             self.init_scene()
             self.restart = False
             self.game_over = False

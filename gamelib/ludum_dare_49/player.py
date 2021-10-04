@@ -110,7 +110,6 @@ class Player(GameObject):
         ]
 
     def switch_color(self):
-        print("SWITCH COLOR")
         if self.color == COL_TYPE1:
             self.color = COL_TYPE2
         elif self.color == COL_TYPE2:

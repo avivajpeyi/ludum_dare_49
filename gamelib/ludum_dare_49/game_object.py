@@ -22,6 +22,7 @@ class GameObject(ABC):
         y: Optional[int] = None,
         physics_handler: Optional[GamePhysicsHandler] = None,
     ):
+        self.alive = True
         self.size = size
         self.screen_handler = screen_handler
         self.color = color
@@ -81,7 +82,7 @@ class GameObject(ABC):
             )
 
     def update(self) -> None:
-        if self.is_physics_object:
+        if self.alive and self.is_physics_object:
             self.rect.center = self.rigid_body.position
             self.handle_collision_with_enemy()
         self.draw()
@@ -127,8 +128,8 @@ class GameObject(ABC):
 
         if collided_with_enemy:
             if self.rigid_body.collision_type == CollisionType.LASER.value:
-                if self.color == collided_enemy.color:
-                    collided_enemy.destroy()
+                if self.color == collided_enemy.color and collided_enemy.alive:
+                    collided_enemy.death_anim_and_destroy()
                     pygame.event.post(SCORE_INCREASE)
 
             if self.rigid_body.collision_type == CollisionType.PLANET.value:

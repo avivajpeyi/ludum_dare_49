@@ -31,7 +31,7 @@ class GamePhysicsHandler:
         self.screen_handler = screen_handler
         self.update_frequency = update_frequency
         self.dt = 1.0 / self.update_frequency
-        # self.space.damping = 0.99
+        # self.space.damping = 0.9
         self.physics_game_objects = []
 
         self.DEBUG_MODE = DEBUG_PHYSICS

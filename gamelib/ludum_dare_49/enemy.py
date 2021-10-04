@@ -7,7 +7,9 @@ import pymunk
 from ludum_dare_49.constants import COL_TYPE1
 
 from .game_object import GameObject
-from .physics import CollisionType, G, planet_gravity, GamePhysicsHandler
+from .physics import CollisionType, G, planet_gravity
+
+from .sparks import Sparks
 
 
 class Enemy(GameObject):
@@ -16,6 +18,7 @@ class Enemy(GameObject):
 
     def __init__(self, screen_handler, color, size, x, y, physics_handler):
         Enemy.STATIC_NUM_ENEMIES += 1
+        self.sparks = None
         super().__init__(
             screen_handler,
             color,
@@ -49,16 +52,6 @@ class Enemy(GameObject):
         factor_off_orbit = np.random.uniform(0.7, 0.95)
         rigid_body.velocity = circular_velocity * factor_off_orbit
 
-        # # Aim the enemy randomly between the circular orbit and directed at the player
-        # rigid_body.velocity = [
-        #     *pygame.math.Vector2(circular_velocity).rotate_rad(
-        #         np.pi / 2 * np.random.rand()
-        #     )
-        # ]
-        #
-
-        # Set the box's angular velocity to match its orbital period and
-        # align its initial angle with its position.
         rigid_body.angular_velocity = v
         rigid_body.angle = math.atan2(
             rigid_body.position.y, rigid_body.position.x
@@ -77,11 +70,33 @@ class Enemy(GameObject):
         return col
 
     def update(self):
-        super().update()
-        # If enemy leaves (twice the distance to) the screen, delete it
-        if self.distance_to_center > 2 * self.screen_handler.half_diag:
-            self.destroy()
+        if self.alive:
+            super().update()
+            # If enemy leaves (twice the distance to) the screen, delete it
+            if self.distance_to_center > 2 * self.screen_handler.half_diag:
+                self.destroy()
+        else:
+            self.sparks.update()
+            if not self.sparks.alive:
+                self.destroy()
 
     def destroy(self) -> None:
-        super().destroy()
         Enemy.STATIC_NUM_ENEMIES -= 1
+        super().destroy()
+
+    def death_anim_and_destroy(self):
+        if self.alive:
+            self.sparks = self.create_sparks()
+            self.alive = False
+
+    def create_sparks(self):
+        x, y = self.rigid_body.position
+        return Sparks(
+            self.screen_handler.screen,
+            color=self.color,
+            loc=[x, y],
+            angle_range=(0, 360),
+            speed_range=(1, 4),
+            scale=1,
+            num_sparks=10,
+        )
