@@ -13,7 +13,6 @@ PROJ_NAME = "dot_blaster"
 
 SRC_CODE_DIR = "gamelib"
 PACKAGES = find_packages(SRC_CODE_DIR)
-print(PACKAGES)
 
 CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
@@ -36,23 +35,9 @@ EXTRA_REQUIRES = [
 ]
 
 
-def version():
-    """Method to help set version"""
-    v = os.getenv("PYTHON_PACKAGE_VERSION")
-    if v is None:
-        try:
-            from package_version import PackageVersion
-
-            pv = PackageVersion()
-            v = pv.generate_next_stable(package_name=PROJ_NAME)
-        except ImportError:
-            v = "1.0.0"
-    return v
-
-
 setup(
     name=PROJ_NAME,
-    version=version(),
+    version="1.0.0",
     description="Ludum Dare 49 game",
     author="Avi + Reinhold",
     author_email="avi.vajpeyi@gmail.com",
