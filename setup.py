@@ -39,7 +39,7 @@ long_description = open("README.md").read()
 
 setup(
     name=PROJ_NAME,
-    version="1.0.2",
+    version="1.0.3",
     description="Ludum Dare 49 game",
     long_description=long_description,
     long_description_content_type="text/markdown",
