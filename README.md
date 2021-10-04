@@ -3,6 +3,8 @@
 # Dot Blaster
 #### Game for [Ludum Dare 49]
 
+Shoot the dots with the appropriate blaster before they get too close!
+
 ![gameplay gif]
 
 

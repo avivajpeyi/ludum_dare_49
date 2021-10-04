@@ -32,13 +32,17 @@ EXTRA_REQUIRES = [
     "flake8",
     "black",
     "isort",
+    "pymunk",
 ]
 
+long_description = open("README.md").read()
 
 setup(
     name=PROJ_NAME,
-    version="1.0.0",
+    version="1.0.1",
     description="Ludum Dare 49 game",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Avi + Reinhold",
     author_email="avi.vajpeyi@gmail.com",
     url="https://github.com/avivajpeyi/dot_blaster",
