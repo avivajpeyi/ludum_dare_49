@@ -32,7 +32,7 @@ def test_enemy():
 
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
-        title_menu.update()
+        title_menu.run_game()
 
         pygame.display.flip()
 

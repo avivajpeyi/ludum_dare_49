@@ -41,10 +41,10 @@ def test_player():
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
-        player.update(pressed_keys)
+        player.run_game(pressed_keys)
         for go in physics_handler.physics_game_objects:
-            go.update()
-        physics_handler.update()
+            go.run_game()
+        physics_handler.run_game()
         planet.draw()
         pygame.display.flip()
         clock.tick(FPS)

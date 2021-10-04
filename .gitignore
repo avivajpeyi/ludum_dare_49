@@ -6,6 +6,9 @@ __pycache__/
 # C extensions
 *.so
 
+highscore.txt
+/gamelib/ludum_dare_49/assets/data/highscore.txt
+
 # Distribution / packaging
 .Python
 env/
@@ -105,8 +108,3 @@ ENV/
 
 # JetBrains project files
 .idea/
-
-
-
-
-

@@ -34,14 +34,14 @@ class Enemy(GameObject):
 
         # Set the enemy's velocity to put it into a circular orbit from its
         # starting position. (dampening prevents circular orbit)
-        r = rigid_body.position.get_distance(self.screen_handler.screen_center)
+        r = rigid_body.position.get_distance(self.screen_handler.center)
         v = math.sqrt(G / r) / r
 
         # Reverse direction for enemies with COLOR1
         if self.color == COL_TYPE1:
             v *= -1
         vec_to_center = rigid_body.position - pymunk.Vec2d(
-            *self.screen_handler.screen_center
+            *self.screen_handler.center
         )
 
         circular_velocity = v * vec_to_center.perpendicular()
@@ -79,7 +79,7 @@ class Enemy(GameObject):
     def update(self):
         super().update()
         # If enemy leaves (twice the distance to) the screen, delete it
-        if self.distance_to_center > 2 * self.screen_handler.half_screen_diag:
+        if self.distance_to_center > 2 * self.screen_handler.half_diag:
             self.destroy()
 
     def destroy(self) -> None:

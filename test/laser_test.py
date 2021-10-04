@@ -45,8 +45,8 @@ def test_laser():
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
         for go in physics_handler.physics_game_objects:
-            go.update()
-        physics_handler.update()
+            go.run_game()
+        physics_handler.run_game()
         planet.draw()
         pygame.display.flip()
         clock.tick(FPS)

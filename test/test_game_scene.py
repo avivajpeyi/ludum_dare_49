@@ -15,7 +15,7 @@ def test_game_scene():
     screen = ScreenHandler()
     game = Game(screen)
     game_is_running = True
-    game.update()
+    game.run_game()
 
 
 if __name__ == "__main__":
