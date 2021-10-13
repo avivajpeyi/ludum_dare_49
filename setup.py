@@ -8,11 +8,11 @@ from setuptools import find_packages, setup
 
 # PROJECT SPECIFIC
 
-PROJ_NAME = "ludum_dare_49"
+PROJ_NAME = "dot_blaster"
+
 
 SRC_CODE_DIR = "gamelib"
 PACKAGES = find_packages(SRC_CODE_DIR)
-print(PACKAGES)
 
 CLASSIFIERS = [
     "Development Status :: 5 - Production/Stable",
@@ -25,43 +25,32 @@ CLASSIFIERS = [
 ]
 INSTALL_REQUIRES = [
     "pygame>2.0.0",
+    "package_version",
+    "pygame-menu",
+    "numpy",
+    "pymunk",
+]
+EXTRA_REQUIRES = [
+    "pyinstaller",
+    "interrogate",
     "pytest>=3.6",
     "pre-commit",
     "flake8",
     "black",
     "isort",
-    "package_version",
-    "interrogate",
-    "pygame-menu",
-    # clap
-    "pyaudio",
-    "pi-clap",
-    # air gesture
-    "opencv-python",
 ]
 
-
-def version():
-    """Method to help set version"""
-    v = os.getenv("PYTHON_PACKAGE_VERSION")
-    if v is None:
-        try:
-            from package_version import PackageVersion
-
-            pv = PackageVersion()
-            v = pv.generate_next_stable(package_name=PROJ_NAME)
-        except ImportError:
-            v = "1.0.0"
-    return v
-
+long_description = open("README.md").read()
 
 setup(
     name=PROJ_NAME,
-    version=version(),
+    version="1.0.3",
     description="Ludum Dare 49 game",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     author="Avi + Reinhold",
     author_email="avi.vajpeyi@gmail.com",
-    url="https://github.com/avivajpeyi/ludum_dare_49",
+    url="https://github.com/avivajpeyi/dot_blaster",
     packages=PACKAGES,
     package_data={PROJ_NAME: ["assets/*"]},
     # When your source code is in a subdirectory under the project root, e.g.
@@ -73,7 +62,7 @@ setup(
     zip_safe=True,
     entry_points={
         "console_scripts": [
-            f"run_ld49_game={PROJ_NAME}.main:main",
+            f"play_dot_blaster={PROJ_NAME}.main:main",
         ]
     },
 )

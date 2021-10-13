@@ -1,10 +1,10 @@
 import pygame
 
-from ludum_dare_49 import colors
-from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
-from ludum_dare_49.physics import GamePhysicsHandler
-from ludum_dare_49.planet import Planet
-from ludum_dare_49.player import Player
+from dot_blaster import colors
+from dot_blaster.constants import FPS, HEIGHT, WIDTH
+from dot_blaster.physics import GamePhysicsHandler
+from dot_blaster.planet import Planet
+from dot_blaster.player import Player
 
 
 def test_player():
@@ -21,9 +21,9 @@ def test_player():
         physics_handler=physics_handler,
     )
     player = Player(
-        size=WIDTH/15.0,
+        size=WIDTH / 40.0,
         screen=screen,
-        color=colors.GREEN,
+        physics_handler=physics_handler,
     )
     player.draw()
 
@@ -41,8 +41,10 @@ def test_player():
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
-        player.update(pressed_keys)
-        # physics_handler.update()
+        player.run_game(pressed_keys)
+        for go in physics_handler.physics_game_objects:
+            go.run_game()
+        physics_handler.run_game()
         planet.draw()
         pygame.display.flip()
         clock.tick(FPS)

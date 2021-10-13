@@ -6,7 +6,9 @@ import pygame
 import pymunk
 import pymunk.pygame_util
 
-from .constants import HEIGHT, WIDTH
+
+from .constants import HEIGHT, WIDTH, MAX_ENEMY_VEL
+from .screen_handler import ScreenHandler
 
 G = 5.0e6  # phoney gravitational constant
 
@@ -21,18 +23,22 @@ class CollisionType(Enum):
 
 class GamePhysicsHandler:
     def __init__(
-        self, screen: pygame.Surface, update_frequency: Optional[int] = 60
+        self,
+        screen_handler: ScreenHandler,
+        update_frequency: Optional[int] = 60,
     ):
         self.space = pymunk.Space()
-        self.screen = screen
+        self.screen_handler = screen_handler
         self.update_frequency = update_frequency
         self.dt = 1.0 / self.update_frequency
-        self.space.damping = 0.9
+        # self.space.damping = 0.9
         self.physics_game_objects = []
 
         self.DEBUG_MODE = DEBUG_PHYSICS
         if self.DEBUG_MODE:
-            self.draw_options = pymunk.pygame_util.DrawOptions(screen)
+            self.draw_options = pymunk.pygame_util.DrawOptions(
+                self.screen_handler.screen
+            )
 
     def update(self):
         """Update the space for the given time step."""
@@ -46,7 +52,14 @@ class GamePhysicsHandler:
 
     def remove_object(self, game_object):
         self.space.remove(game_object.rigid_body, game_object.collider)
-        self.physics_game_objects.remove(game_object)  # THIS MAY NOT WORK
+        self.physics_game_objects.remove(game_object)
+
+    def destroy(self):
+        for go in self.physics_game_objects:
+            self.space.remove(go.rigid_body, go.collider)
+            del go
+        self.physics_game_objects = []
+        del self
 
 
 def planet_gravity(
@@ -60,10 +73,13 @@ def planet_gravity(
     This function is structed to be used as a pymunk.velocity_func
     http://www.pymunk.org/en/latest/pymunk.html#pymunk.Body.velocity_func
     """
-    sq_dist = body.position.get_dist_sqrd((WIDTH / 2, HEIGHT / 2))
-    g = (
-        (body.position - pymunk.Vec2d(WIDTH / 2, HEIGHT / 2))
-        * -G
-        / (sq_dist * math.sqrt(sq_dist))
-    )
+    r_sqr = body.position.get_dist_sqrd((WIDTH / 2, HEIGHT / 2))
+    r_vec = body.position - pymunk.Vec2d(WIDTH / 2, HEIGHT / 2)
+    g = r_vec * -G / (r_sqr * math.sqrt(r_sqr))
     pymunk.Body.update_velocity(body, g, damping, dt)
+
+    # # limit velocity
+    l = body.velocity.length
+    if l > MAX_ENEMY_VEL:
+        scale = MAX_ENEMY_VEL / l
+        body.velocity = body.velocity * scale

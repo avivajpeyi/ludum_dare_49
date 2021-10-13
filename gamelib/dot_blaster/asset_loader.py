@@ -6,6 +6,8 @@ Loads data files from the "assets" directory shipped with a game.
 
 import os
 
+import pygame
+
 data_py = os.path.abspath(os.path.dirname(__file__))
 data_dir = os.path.normpath(os.path.join(data_py, "assets"))
 
@@ -21,3 +23,8 @@ def load(filename, mode="rb"):
     "mode" is passed as the second arg to open().
     """
     return open(os.path.join(data_dir, filename), mode)
+
+
+def load_image(name):
+    img = pygame.image.load(filepath(name))
+    return img

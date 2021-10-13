@@ -3,8 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+*.DS_Store
 # C extensions
 *.so
+
+highscore.txt
+/gamelib/dot_blaster/assets/data/highscore.txt
 
 # Distribution / packaging
 .Python
@@ -105,8 +109,3 @@ ENV/
 
 # JetBrains project files
 .idea/
-
-
-
-
-

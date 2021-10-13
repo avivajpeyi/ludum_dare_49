@@ -1,2 +1,3 @@
-from gamelib import main
+from dot_blaster import main
+
 main.main()

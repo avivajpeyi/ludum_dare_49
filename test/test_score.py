@@ -4,20 +4,16 @@ import pygame
 
 from dot_blaster import colors
 from dot_blaster.constants import FPS, HEIGHT, WIDTH
-from dot_blaster.enemy import Enemy
-from dot_blaster.physics import GamePhysicsHandler
-from dot_blaster.planet import Planet
-from dot_blaster.ui import TitleMenu
-
-
-def start_game_test():
-    print("START")
+from dot_blaster.score_manager import ScoreManager
 
 
 def test_enemy():
     pygame.init()
     screen = pygame.display.set_mode((WIDTH, HEIGHT))
-    title_menu = TitleMenu(screen, start_game_test)
+
+    clock = pygame.time.Clock()
+
+    score_manager = ScoreManager()
 
     while True:
         for event in pygame.event.get():
@@ -30,11 +26,13 @@ def test_enemy():
             elif event.type == pygame.KEYDOWN and event.key == pygame.K_p:
                 pygame.image.save(screen, "planet.png")
 
-        # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
-        title_menu.run_game()
+        score_manager.draw_score_on_top_right()
 
         pygame.display.flip()
+        clock.tick(FPS)
+
+        pygame.display.set_caption("fps: " + str(clock.get_fps()))
 
 
 if __name__ == "__main__":

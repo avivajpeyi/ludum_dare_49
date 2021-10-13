@@ -1,10 +1,11 @@
+import numpy as np
 import pygame
 
-from ludum_dare_49 import colors
-from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
-from ludum_dare_49.physics import GamePhysicsHandler
-from ludum_dare_49.planet import Planet
-from ludum_dare_49.laser import Laser
+from dot_blaster import colors
+from dot_blaster.constants import FPS, HEIGHT, WIDTH
+from dot_blaster.laser import Laser
+from dot_blaster.physics import GamePhysicsHandler
+from dot_blaster.planet import Planet
 
 
 def test_laser():
@@ -20,15 +21,14 @@ def test_laser():
         color=colors.YELLOW,
         physics_handler=physics_handler,
     )
-    laser = Laser(
-        screen=screen,
-        size=200,
-        color=colors.YELLOW,
-        x=10,
-        y=10,
-        physics_handler=physics_handler,
-    )
-
+    for ang in range(8):
+        laser = Laser(
+            screen=screen,
+            color=colors.YELLOW,
+            angle=ang * np.pi / 4,
+            physics_handler=physics_handler,
+        )
+        laser.draw()
 
     while True:
         for event in pygame.event.get():
@@ -44,10 +44,10 @@ def test_laser():
         # 'planet' in the center of screen
         screen.fill(pygame.Color("black"))
         pressed_keys = pygame.key.get_pressed()
-        laser.draw()
-        #player.update(pressed_keys)
-        # physics_handler.update()
-        #planet.draw()
+        for go in physics_handler.physics_game_objects:
+            go.run_game()
+        physics_handler.run_game()
+        planet.draw()
         pygame.display.flip()
         clock.tick(FPS)
 

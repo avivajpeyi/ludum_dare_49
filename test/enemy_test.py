@@ -2,11 +2,11 @@ import random
 
 import pygame
 
-from ludum_dare_49 import colors
-from ludum_dare_49.constants import FPS, HEIGHT, WIDTH
-from ludum_dare_49.enemy import Enemy
-from ludum_dare_49.physics import GamePhysicsHandler
-from ludum_dare_49.planet import Planet
+from dot_blaster import colors
+from dot_blaster.constants import FPS, HEIGHT, WIDTH
+from dot_blaster.enemy import Enemy
+from dot_blaster.physics import GamePhysicsHandler
+from dot_blaster.planet import Planet
 
 
 def test_enemy():
@@ -45,10 +45,9 @@ def test_enemy():
                 pygame.image.save(screen, "planet.png")
 
         screen.fill(pygame.Color("black"))
-        planet.check_for_collision_with_enemy()
         for go in physics_handler.physics_game_objects:
-            go.update()
-        physics_handler.update()
+            go.run_game()
+        physics_handler.run_game()
 
         pygame.display.flip()
         clock.tick(FPS)
