@@ -7,7 +7,7 @@ from tensorflow.keras.layers import (
     Dense,
     Dropout,
 )
-from tensorflow.keras import optimizers
+from tensorflow.keras.optimizers import adam_v2
 
 from .constants import *
 
@@ -36,11 +36,10 @@ def create_model(outputSize):
     model.add(Dense(512, activation="relu"))
     model.add(Dense(units=outputSize, activation="softmax"))
     model.compile(
-        optimizer=optimizers.Adam(),
+        optimizer=adam_v2.Adam(learning_rate=1e-4),
         loss="categorical_crossentropy",
         metrics=["accuracy"],
     )
-
     return model
 
 
