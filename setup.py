@@ -2,7 +2,6 @@
 # Inspired by:
 # https://hynek.me/articles/sharing-your-labor-of-love-pypi-quick-and-dirty/
 
-import os
 
 from setuptools import find_packages, setup
 
@@ -24,6 +23,7 @@ CLASSIFIERS = [
     "Programming Language :: Python :: 3",
 ]
 INSTALL_REQUIRES = [
+    "wheel",
     "pygame>2.0.0",
     "package_version",
     "pygame-menu",
