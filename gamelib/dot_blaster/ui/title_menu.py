@@ -1,14 +1,14 @@
 from typing import Callable
 
 from .base_menu import BaseMenu
-from ..score_manager import ScoreManager
+from ..handlers.score_handler import ScoreHandler
 
 import pygame_menu
 
 
 class TitleMenu(BaseMenu):
     def __init__(
-        self, screen, start_func: Callable, score_manager=ScoreManager()
+        self, screen, start_func: Callable, score_manager=ScoreHandler()
     ):
         super(TitleMenu, self).__init__(screen)
         self.main_menu.add.button("Play", start_func)

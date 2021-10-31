@@ -3,8 +3,8 @@ from typing import Tuple
 import numpy as np
 import pygame
 
-from . import __NAME__
-from . import constants as const
+from .. import __NAME__
+from .. import constants as const
 
 
 class ScreenHandler:

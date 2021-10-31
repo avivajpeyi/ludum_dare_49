@@ -3,12 +3,11 @@ from typing import Optional
 import numpy as np
 import pygame
 import pymunk
-from dot_blaster import colors
-from dot_blaster.constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH
+from ..constants import LASER_LENGTH, LASER_SPEED, LASER_WIDTH, colors
 
-from .screen_handler import ScreenHandler
-from .game_object import GameObject
-from .physics import CollisionType, GamePhysicsHandler
+from ..handlers.screen_handler import ScreenHandler
+from ..game_objects.game_object import GameObject
+from ..handlers.physics import CollisionType, GamePhysicsHandler
 
 
 class Laser(GameObject):

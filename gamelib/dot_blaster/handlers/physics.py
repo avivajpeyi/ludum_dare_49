@@ -7,7 +7,7 @@ import pymunk
 import pymunk.pygame_util
 
 
-from .constants import HEIGHT, WIDTH, MAX_ENEMY_VEL
+from ..constants import HEIGHT, WIDTH, MAX_ENEMY_VEL
 from .screen_handler import ScreenHandler
 
 G = 5.0e6  # phoney gravitational constant

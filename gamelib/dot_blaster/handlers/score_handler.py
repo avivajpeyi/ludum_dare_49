@@ -1,11 +1,11 @@
-from . import constants as const
-from .asset_loader import load
-from .colors import WHITE
-from .constants import HIGHSCORE_FILE
-from .ui import ptext
+from .. import constants as const
+from ..asset_loader import load
+from ..constants.colors import WHITE
+from ..constants import HIGHSCORE_FILE
+from ..ui import ptext
 
 
-class ScoreManager:
+class ScoreHandler:
     def __init__(self):
         self._points = 0
         self.archived_score = self.read_archived_score()

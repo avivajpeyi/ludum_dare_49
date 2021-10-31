@@ -5,11 +5,10 @@ from typing import Optional, Tuple
 import numpy as np
 import pygame
 
-from .colors import WHITE
-from .custom_events import GAME_OVER, SCORE_INCREASE
-from .physics import CollisionType, GamePhysicsHandler
-
-from .screen_handler import ScreenHandler
+from ..constants.colors import WHITE
+from ..constants.custom_events import GAME_OVER, SCORE_INCREASE
+from ..handlers.physics import CollisionType, GamePhysicsHandler
+from ..handlers.screen_handler import ScreenHandler
 
 
 class GameObject(ABC):

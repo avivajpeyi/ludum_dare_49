@@ -2,7 +2,7 @@ import pygame
 import pymunk
 
 from .game_object import GameObject
-from .physics import CollisionType
+from ..handlers.physics import CollisionType
 
 
 class Planet(GameObject):

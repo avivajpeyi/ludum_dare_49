@@ -1,9 +1,9 @@
 import numpy as np
 import pygame
 
-from . import constants as const
+from .. import constants as const
 from .enemy import Enemy
-from .physics import GamePhysicsHandler
+from ..handlers.physics import GamePhysicsHandler
 
 
 class EnemyFactory(object):

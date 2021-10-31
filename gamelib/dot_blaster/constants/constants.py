@@ -1,10 +1,10 @@
 import pygame
 
-from dot_blaster import colors
+from . import colors
 
 import pygame_menu
 
-from . import asset_loader
+from .. import asset_loader
 
 # SCREEN ARGS
 FPS = 50

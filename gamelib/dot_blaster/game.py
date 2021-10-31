@@ -8,17 +8,17 @@ import sys
 
 import pygame
 
-from . import __NAME__, asset_loader, colors
+from . import __NAME__, asset_loader
+from .constants import colors, image_tools
 from . import constants as const
-from . import image_tools
-from .custom_events import GAME_OVER, SCORE_INCREASE
-from .enemy_factory import EnemyFactory
-from .physics import GamePhysicsHandler
-from .planet import Planet
-from .player import Player
-from .enemy import Enemy
-from .score_manager import ScoreManager
-from .screen_handler import ScreenHandler
+from .constants.custom_events import GAME_OVER, SCORE_INCREASE
+from .game_objects.enemy_factory import EnemyFactory
+from .handlers.physics import GamePhysicsHandler
+from .game_objects.planet import Planet
+from .game_objects.player import Player
+from .game_objects.enemy import Enemy
+from .handlers.score_handler import ScoreHandler
+from .handlers.screen_handler import ScreenHandler
 from .ui.title_menu import TitleMenu
 from .ui.game_over_screen import GameOverScreen
 
@@ -29,7 +29,7 @@ class GameWindow:
     def __init__(self):
         pygame.display.set_caption(__NAME__)
         self.screen_handler = ScreenHandler()
-        self.score_manager = ScoreManager()
+        self.score_manager = ScoreHandler()
 
         if PLAY_BACKGROUND_MUSIC:
             self.play_background_music()
@@ -74,7 +74,7 @@ class Game:
         if score_manger:
             self.score_manger = score_manger
         else:
-            self.score_manger = ScoreManager()
+            self.score_manger = ScoreHandler()
         self.update_full_screen = False
         self.fullscreen = False
         self.init_data()

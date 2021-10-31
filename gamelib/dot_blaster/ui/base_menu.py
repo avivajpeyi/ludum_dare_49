@@ -4,7 +4,7 @@ import pygame_menu
 
 from .. import __NAME__  # game name
 from .. import constants as const
-from .. import image_tools
+from ..constants import image_tools
 
 
 class BaseMenu:

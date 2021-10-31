@@ -4,10 +4,10 @@ import numpy as np
 import pygame
 import pymunk
 
-from dot_blaster.constants import COL_TYPE1
+from ..constants import COL_TYPE1
 
 from .game_object import GameObject
-from .physics import CollisionType, G, planet_gravity
+from ..handlers.physics import CollisionType, G, planet_gravity
 
 from .sparks import Sparks
 

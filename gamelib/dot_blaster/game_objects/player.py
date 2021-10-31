@@ -3,17 +3,17 @@ from typing import Optional
 import numpy as np
 import pygame
 
-from dot_blaster.constants import (
+from ..constants import (
     COL_TYPE1,
     COL_TYPE2,
     REFIRE_DELAY,
     ROTATION_SPEED,
 )
-from dot_blaster.laser import Laser
+from .laser import Laser
 
 from .game_object import GameObject
-from .physics import GamePhysicsHandler
-from .screen_handler import ScreenHandler
+from ..handlers.physics import GamePhysicsHandler
+from ..handlers.screen_handler import ScreenHandler
 
 
 ### Create the triangle character here
