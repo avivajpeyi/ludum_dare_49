@@ -23,7 +23,14 @@ CLASSIFIERS = [
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
 ]
-INSTALL_REQUIRES = ["pygame>2.0.0", "package_version", "pygame-menu", "numpy"]
+INSTALL_REQUIRES = [
+    "wheel",
+    "pymunk",
+    "pygame>2.0.0",
+    "package_version",
+    "pygame-menu",
+    "numpy",
+]
 EXTRA_REQUIRES = [
     "pyinstaller",
     "interrogate",
@@ -32,7 +39,6 @@ EXTRA_REQUIRES = [
     "flake8",
     "black",
     "isort",
-    "pymunk",
 ]
 
 long_description = open("README.md").read()
