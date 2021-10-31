@@ -69,7 +69,7 @@ ACTIONS_GESTURE_ENCODING = {
 }
 
 # Data Collection Mode variables
-DATAMODE = False  # Don't ever edit this!
+DATAMODE = True  # Don't ever edit this!
 WHERE = "train"
 GESTURE = "okay"
 NUMBERTOCAPTURE = 100

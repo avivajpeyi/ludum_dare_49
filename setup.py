@@ -39,6 +39,16 @@ EXTRA_REQUIRES = [
     "black",
     "isort",
 ]
+MIC_REQUIRES = [
+    "pysimplegui",
+    "pyaudio",
+]
+# sudo apt-get install python3-tk libasound-dev portaudio19-dev libportaudio2 libportaudiocpp0
+
+CAM_REQUIRES=[
+    "opencv2-python",
+    "tensorflow"
+]
 
 long_description = open("README.md").read()
 
