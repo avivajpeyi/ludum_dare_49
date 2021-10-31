@@ -2,138 +2,21 @@ print("Loading dependencies")
 
 # Importing Modules
 import os
-import time
 import numpy as np
 import cv2
 import time
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import (
-    Conv2D,
-    MaxPooling2D,
-    Flatten,
-    Dense,
-    Dropout,
-)
-from tensorflow.keras import optimizers
-import pygame
 
-"""
-GLOBAL VARIABLES
-"""
-# Layout/FrontEnd of Frame
-IMAGEHEIGHT = 480
-IMAGEWIDTH = 640
-ROIWIDTH = 256
-LEFT = int(IMAGEWIDTH / 2 - ROIWIDTH / 2)
-RIGHT = LEFT + ROIWIDTH
-TOP = int(IMAGEHEIGHT / 2 - ROIWIDTH / 2)
-BOTTOM = TOP + ROIWIDTH
-SCOREBOXWIDTH = 320
-BARCHARTLENGTH = SCOREBOXWIDTH - 50
-BARCHARTTHICKNESS = 15
-BARCHARTGAP = 20
-BARCHARTOFFSET = 8
-FONT = cv2.FONT_HERSHEY_SIMPLEX
+from .constants import *
+from .model import create_model, load_model
 
-# Model variables
-NUMBEROFGESTURES = 8
-WEIGHTS_URL = "./my_model.h5"
-GESTURE_ENCODING = {
-    0: "fist",
-    1: "five",
-    2: "none",
-    3: "okay",
-    4: "peace",
-    5: "rad",
-    6: "straight",
-    7: "thumbs",
-}
-
-# OpenCV image processing variables
-BGSUBTHRESHOLD = 50
-THRESHOLD = 50
-
-# Gesture Mode variables
-GESTUREMODE = False  # Don't ever edit this!
-GESTURES_RECORDED = [10, 10, 10, 10, 10, 10, 10, 10, 10, 10]
-SONG = "The Beatles - I Saw Her Standing There"
-ACTIONS_GESTURE_ENCODING = {
-    "fist": "Play/Unpause",
-    "five": "Pause",
-    "none": "Do Nothing",
-    "okay": "Increase Volume",
-    "peace": "Decrease Volume",
-    "rad": "Load Song",
-    "straight": "Stop",
-    "thumbs": "NA",
-}
-
-# Data Collection Mode variables
-DATAMODE = True  # Don't ever edit this!
-WHERE = "train"
-GESTURE = "okay"
-NUMBERTOCAPTURE = 100
-
-# Testing Predictions of Model Mode variables
-PREDICT = False  # Don't ever edit this!
-HISTORIC_PREDICTIONS = [
-    np.ones((1, 8)),
-    np.ones((1, 8)),
-    np.ones((1, 8)),
-    np.ones((1, 8)),
-    np.ones((1, 8)),
-]
-IMAGEAVERAGING = 5
-
-
-"""
-MUSIC PLAYER CLASS
-"""
-# Music Player Class. Contains functions to load, play, pause, adjust volume, and stop music
-class MusicMan(object):
-    def __init__(self, file):
-        print("Loading music player...")
-        pygame.mixer.init()
-        self.player = pygame.mixer.music
-        self.song = file
-        self.file = f"./music/{file}.mp3"
-        self.state = None
-
-    def load(self):
-        if self.state is None:
-            self.player.load(self.file)
-            self.state = "loaded"
-
-    def play(self):
-        if self.state == "pause":
-            self.player.unpause()
-            self.state = "play"
-        elif self.state in ["loaded", "stop"]:
-            self.player.play()
-            self.state = "play"
-
-    def pause(self):
-        if self.state == "play":
-            self.player.pause()
-            self.state = "pause"
-
-    def increase_volume(self):
-        if self.state is not None:
-            self.player.set_volume(self.player.get_volume() - 0.02)
-
-    def decrease_volume(self):
-        if self.state is not None:
-            self.player.set_volume(self.player.get_volume() + 0.02)
-
-    def stop(self):
-        if self.state == "play":
-            self.player.stop()
-            self.state = "stop"
+from .music_player import MusicMan
 
 
 """
 USEFUL FUNCTIONS
 """
+
+
 # Creating a path for storing data
 def create_path(WHERE, GESTURE):
     print("Creating path to store data for collection...")
@@ -145,49 +28,6 @@ def create_path(WHERE, GESTURE):
     else:
         img_label = int(sorted(os.listdir(DIR_NAME), key=len)[-1][:-4])
     return img_label
-
-
-# Creating our deep learning model to recognize the hand image
-def create_model(outputSize):
-    model = Sequential()
-    model.add(
-        Conv2D(
-            filters=32,
-            kernel_size=(3, 3),
-            activation="relu",
-            input_shape=(256, 256, 1),
-        )
-    )
-    model.add(Conv2D(filters=32, kernel_size=(3, 3), activation="relu"))
-    model.add(MaxPooling2D(pool_size=2))
-    model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))
-    model.add(Conv2D(filters=64, kernel_size=(3, 3), activation="relu"))
-    model.add(MaxPooling2D(pool_size=2))
-    model.add(Conv2D(filters=128, kernel_size=(3, 3), activation="relu"))
-    model.add(Conv2D(filters=128, kernel_size=(3, 3), activation="relu"))
-    model.add(MaxPooling2D(pool_size=2))
-    model.add(Flatten())
-    model.add(Dropout(rate=0.5))
-    model.add(Dense(512, activation="relu"))
-    model.add(Dense(units=outputSize, activation="softmax"))
-    model.compile(
-        optimizer=optimizers.Adam(),
-        loss="categorical_crossentropy",
-        metrics=["accuracy"],
-    )
-
-    return model
-
-
-# Function to load the model
-def load_model(outputSize, weight_url):
-    # Loading the model
-    modelName = "Hand Gesture Recognition"
-    print(f"Loading model {modelName}")
-    model = create_model(NUMBEROFGESTURES)
-    model.load_weights(weight_url)
-
-    return model, modelName
 
 
 # Function that counts the number of times the last element is repeated (starting at the end of the array)
@@ -553,7 +393,7 @@ def drawMask(frame, mask):
     return np.hstack((frame, mask_frame))
 
 
-if __name__ == "__main__":
+def main():
     # Create a path for the data collection
     img_label = create_path(WHERE, GESTURE)
 
@@ -726,3 +566,7 @@ if __name__ == "__main__":
         # Release the cap and close all windows if loop is broken
         cap.release()
         cv2.destroyAllWindows()
+
+
+if __name__ == "__main__":
+    main()
