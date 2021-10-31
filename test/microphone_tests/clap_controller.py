@@ -17,11 +17,11 @@ class Config(Settings):
 
     def on2Claps(self):
         """Custom action for 2 claps"""
-        print("Light flashed on pin 4")
+        print("2 Claps trigger")
 
     def on3Claps(self):
         """Custom action for 3 claps"""
-        print("Light toggled on pin 6")
+        print("3 claps triggered")
 
 
 def main():
